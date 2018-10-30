@@ -10,22 +10,21 @@ This provides the potential for all components
 to have access to any part of the state
 and dispatch actions that update any of it.
 
+This is similar to how REST services generally
+have access to entire databases
+rather than being restricted to subsets.
+The same level of access can be provided
+using the Context API.
+The Provider implemented by context-easy
+does exactly this.
+
 The easiest way for components to use this
 is through the `useContext` hook added in React 16.7.
 If you are not yet familiar with React hooks,
 read about them at
 <https://raw.githubusercontent.com/mvolkmann/context-easy/master/hooks.md>.
 
-This is similar to how REST services generally
-have access to entire databases
-rather than being restricted to subsets.
-
-The same level of access can be provided
-using the Context API.
-The Provider implemented by context-easy
-does exactly this.
-
-To use it,
+To use context-easy:
 
 1. Import `EasyProvider`.
 
@@ -53,6 +52,7 @@ export default function App() {
       {/* top-most components go here */}
     </EasyProvider>
   );
+}
 ```
 
 In function components that need to access and/or modify this state:
@@ -77,7 +77,7 @@ context.person.name;
 ```
 
 4. Update state properties at specific paths
-   by calling methods on the `context` object.
+   by calling methods on the `context` object.\
    For example, to change the state property at `person.name`,
    call `context.set('person.name', 'Mark')`.
 
@@ -132,13 +132,13 @@ The context object currently implements nine methods.
 
 ## Options
 
-The `EasyProvider` component accepts to optional props.
+The `EasyProvider` component accepts two optional props.
 
 To log all state changes in the devtools console,
 add the `log` prop.
 
 To validate all method calls made on the context object
-and throw an error when they are called correctly,
+and throw an error when they are called incorrectly,
 add the `validate` prop.
 
 These are useful in development, but typically should not be used in production.
