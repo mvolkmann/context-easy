@@ -1,12 +1,6 @@
 {
   "name": "context-easy",
   "version": "0.1.0",
-  "dependencies": {
-    "lodash": "^4.17.11",
-    "react": "16.7.0-alpha.0",
-    "react-dom": "16.7.0-alpha.0",
-    "react-scripts": "2.0.5"
-  },
   "scripts": {
     "build": "react-scripts build",
     "format": "prettier --write 'src/**/*.{js,scss}'",
@@ -25,6 +19,12 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "react": "16.7.0-alpha.0",
+    "react-dom": "16.7.0-alpha.0",
+    "react-scripts": "2.0.5"
+  },
   "devDependencies": {
     "cross-env": "^5.2.0",
     "eslint-plugin-html": "^4.0.6",
