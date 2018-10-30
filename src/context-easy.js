@@ -6,6 +6,8 @@ const MSG_PREFIX = 'easy-context method ';
 
 export const EasyContext = React.createContext();
 
+const isProd = process.env.NODE_ENV === 'production';
+
 function copyWithoutFunctions(obj) {
   return Object.keys(obj).reduce((acc, key) => {
     const value = obj[key];
@@ -172,8 +174,8 @@ export class EasyProvider extends Component {
 
   componentDidMount() {
     const {log: shouldLog, validate} = this.props;
-    if (!shouldLog) log = noOp;
-    if (!validate) {
+    if (!shouldLog || isProd) log = noOp;
+    if (!validate || isProd) {
       validateArray = noOp;
       validateFunction = noOp;
       validateNumber = noOp;

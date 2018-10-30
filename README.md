@@ -168,6 +168,8 @@ and throw an error when they are called incorrectly,
 add the `validate` prop.
 
 These are useful in development, but typically should not be used in production.
+When the NODE_ENV environment variable is set to "production",
+these options are ignored.
 
 The GitHub repository at <https://github.com/mvolkmann/context-easy-demo>
 provides an example application that uses context-easy.
