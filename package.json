@@ -1,6 +1,6 @@
 {
   "name": "context-easy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "build": "react-scripts build",
     "format": "prettier --write 'src/**/*.{js,scss}'",

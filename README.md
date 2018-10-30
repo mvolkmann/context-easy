@@ -38,8 +38,10 @@ import {EasyProvider} from './context-easy';
 const initialState = {
   count: 0,
   person: {
-    name: 'Mark'
-  }
+    name: 'Mark',
+    occupation: 'software developer'
+  },
+  size: 'medium'
 };
 ```
 
@@ -129,6 +131,28 @@ The context object currently implements nine methods.
   This sets the value at the given path to
   the value returned by passing the current value
   to the function provided as the second argument.
+
+## Re-rendering
+
+The `useContext` hook subscribes components that call it
+to context state updates.
+This means that components will be re-rendered
+on every context state change.
+To only re-render components will specific context state properties are changed,
+wrap the component JSX is a call to the `useCallback` hook.
+
+For example, suppose a component only depends on
+the context state properties `count` and `person.name`.
+The following code inside a function component
+will make it so the component is only re-rendered
+when those context state properties change.
+
+```js
+const context = useContext(EasyContext);
+const {count, person} = context;
+const {name} = person;
+return useCallback(<div>component JSX goes here.</div>, [count, name]);
+```
 
 ## Options
 
