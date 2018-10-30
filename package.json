@@ -1,8 +1,9 @@
 {
   "name": "context-easy",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "main": "lib/context-easy.js",
   "scripts": {
-    "build": "react-scripts build",
+    "build": "babel src -d lib",
     "format": "prettier --write 'src/**/*.{js,scss}'",
     "lint": "eslint --quiet src --ext .js",
     "prepush": "npm run verify",
@@ -26,6 +27,10 @@
     "react-scripts": "2.0.5"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "cross-env": "^5.2.0",
     "eslint-plugin-html": "^4.0.6",
     "husky": "^1.1.2",
