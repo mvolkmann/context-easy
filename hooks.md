@@ -43,7 +43,8 @@ opening/closing resources.
 Hooks provide easier ways to work with state and context.
 
 Hooks make it easier to reuse state logic between multiple components.
-This removes the need for higher-order components and render props,
+In most cases this removes the need
+for higher-order components and render props,
 both of which require increased levels of code nesting.
 
 ## Rules For Hooks
@@ -627,9 +628,10 @@ Many of these are listed at <https://nikgraf.github.io/react-hooks/>.
 Hooks are a great addition to React!
 They make implementing components much easier.
 They also likely spell the end of
-implementing React components with classes,
-implementing higher-order components,
-and using render props.
+implementing React components with classes.
+However, you may not want to use them in production apps
+just yet since they are still considered experimental
+and their API may change.
 
 ## Resources
 
