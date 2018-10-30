@@ -240,6 +240,10 @@ the function component is re-rendered.
 To avoid re-rendering the component on every context state change,
 wrap the returned JSX in a call to `useCallback` described next.
 
+A great use of the `useContext` hook is in
+conjunction with the npm package "context-easy".
+See <https://www.npmjs.com/package/context-easy>.
+
 ### Callback Hook
 
 The `useCallback` hook takes an expression and
@@ -620,7 +624,12 @@ Many of these are listed at <https://nikgraf.github.io/react-hooks/>.
 
 ## Conclusion
 
-TODO: Write this!
+Hooks are a great addition to React!
+They make implementing components much easier.
+They also likely spell the end of
+implementing React components with classes,
+implementing higher-order components,
+and using render props.
 
 ## Resources
 

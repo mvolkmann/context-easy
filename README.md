@@ -6,7 +6,9 @@ and is highly generic, making it suitable for any application.
 
 When using Redux to manage application state,
 all the state is held in a single store.
-This provides the potential for all components
+This can be thought of like a client-side database
+that holds multiple collections of object.
+It provides the potential for all components
 to have access to any part of the state
 and dispatch actions that update any of it.
 
