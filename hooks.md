@@ -139,7 +139,8 @@ in function components.
 
 Effects have two phases, setup and cleanup.
 Think of setup as being performed when a class component
-would call `componentDidMount` or `componentDidUpdate`.
+would call `componentDidMount` or `componentDidUpdate`,
+which is after React updates the DOM.
 Think of cleanup as being performed when a class component
 would call `componentWillUnmount`.
 
