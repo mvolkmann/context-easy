@@ -35,17 +35,17 @@ Also, optimizing code that uses classes is harder
 than optimizing code that only uses functions.
 This refers to minifying, hot reloading, and tree shaking.
 
-Hooks support using "effects" in place of lifecycle methods.
-This makes it possible to better organize related code
-such as adding/removing event listeners and
-opening/closing resources.
-
-Hooks provide easier ways to work with state and context.
+Hooks provide easier ways to work with component state and context.
 
 Hooks make it easier to reuse state logic between multiple components.
 In most cases this removes the need
 for higher-order components and render props,
 both of which require increased levels of code nesting.
+
+Hooks support using "effects" in place of lifecycle methods.
+This makes it possible to better organize related code
+such as adding/removing event listeners and
+opening/closing resources.
 
 ## Rules For Hooks
 
