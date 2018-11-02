@@ -1,0 +1,35 @@
+"Get Hooked on React!" talk abstract
+
+Description:
+
+Hooks enable implementing stateful components
+with functions instead of classes.
+
+The benefits of using hooks include:
+
+* provides easier ways to work with component state and context
+* removes the need to understand the `this` keyword
+* removes the need to understand what it means to
+  bind a function, and when to do it
+* supports using "effects" in place of lifecycle methods
+  which makes it possible to better organize related code
+  such as adding/removing event listeners and
+  opening/closing resources
+* makes it easier to reuse state logic between multiple components
+  than using higher-order components and render props
+* improves ability for tooling to optimize code because
+  it is easier to optimize functions than classes
+
+This talks covers everything you need to know to
+get started using hooks in React function components.
+
+Audience:
+  web developers using React
+
+Sample talk video: https://www.youtube.com/watch?v=5kt3urZOg4g
+
+Level:
+  Intermediate
+
+Prerequisite knowledge:
+  Attendees should be familiar with basic use of React.
