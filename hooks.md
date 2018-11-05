@@ -126,10 +126,11 @@ the current value for each piece of state.
 Initial values are only be applied during the first render.
 
 It's not necessary to understand how this works, but it is interesting.
-Conceptually, the state values are stored in an array.
-Each call to `useState` associates a state value with a different index.
-In the example above, `petName` is stored at index 0
-and `petBreed` is stored at index 1.
+Conceptually, the state values are stored in a linked list.
+Each call to `useState` associates a state value
+with a different node in the linked list.
+In the example above, `petName` is stored in the first node
+and `petBreed` is stored in the second node.
 
 ### Effect Hook
 
