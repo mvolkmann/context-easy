@@ -333,7 +333,8 @@ While both provide memoization,
 
 ### React.memo function
 
-The `React.memo` function memoizes a function component so
+The `React.memo` function, not a hook, that was added in React 16.6.
+It memoizes a function component so
 it is only re-rendered if at least one of its props has changed.
 This does what class components do when they
 extend from `PureComponent` instead of `Component`.
@@ -359,8 +360,8 @@ It is patterned after Redux.
 
 Here's an example of a very simple todo app
 that uses this hook. It uses Sass for styling.
-Note how the `TodoList` component obtains the `state`
-and the `dispatch` function by calling `useReducer`.
+Note how the `TodoList` component calls `useReducer`
+to obtain the `state` and the `dispatch` function.
 It calls the `dispatch` function
 in its event handling functions.
 
@@ -574,7 +575,7 @@ Custom hooks are useful for extracting hook functionality
 from a function component so it can be
 reused in multiple function components.
 
-For example, Dan Abramov shared a custom hook
+For example, Dan Abramov demonstrated a custom hook
 that watches the browser window width.
 
 ```js
@@ -619,7 +620,7 @@ const nameProps = useFormInput('');
 
 return (
   <input {...nameProps} />;
-)
+);
 ```
 
 ## Third Party Hooks

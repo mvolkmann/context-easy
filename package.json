@@ -1,6 +1,6 @@
 {
   "name": "context-easy",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "lib/context-easy.js",
   "scripts": {
     "build": "babel src -d lib",
