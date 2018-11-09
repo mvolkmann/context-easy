@@ -10,6 +10,11 @@ Hooks simply provide a new way that
 most developers will find easier to understand
 and is backward-compatible with existing code.
 
+Components that use hooks can be used together
+with class-based components.
+Existing apps can choose to gradually incorporate hooks
+or never use them.
+
 Eventually it will be possible to use a function component
 to do everything that is currently possible with a class component
 However, currently there are some lifecycle methods
@@ -19,11 +24,6 @@ whose functionality cannot yet be implemented when using hooks.
 Hooks are currently considered experimental
 and the API may still change.
 
-Components that use hooks can be used together
-with class-based components.
-Existing apps can choose to gradually incorporate hooks
-or never use them.
-
 ## Benefits of Hooks
 
 Hooks support implementing nearly any component
@@ -31,8 +31,9 @@ without creating a class.
 Many developers find classes confusing
 because they need to understand the `this` keyword,
 what it means to `bind` a function, and when to do it.
-Also, optimizing code that uses classes is harder
-than optimizing code that only uses functions.
+
+Optimizing code that uses functions is easier
+than optimizing code that uses classes.
 This refers to minifying, hot reloading, and tree shaking.
 
 Hooks provide easier ways to work with component state and context.
@@ -49,14 +50,14 @@ opening/closing resources.
 
 ## Rules For Hooks
 
-By convention the name of each hook function should start with "use".
-This allows linting rules to check for proper use of hooks
+Hook function names should start with "use".
+This convention allows linting rules to check for proper use of hooks
 and provides a clue that the function may access state.
 
-Hooks can only be called in function-based components
-and in other custom hooks.
+Hook functions can only be called in
+function-based components and in custom hooks.
 
-Hooks cannot be called conditionally.
+Hook functions cannot be called conditionally.
 This means they cannot be called in
 if/else blocks, loops, or nested functions.
 This ensures that for any component,
@@ -81,7 +82,7 @@ configure the `react-hooks/rules-of-hooks` ESLint rule.
 ## Provided Hooks
 
 The hooks provided by React are implemented as functions
-that are exported from the `react` package.
+that are exported by the `react` package.
 
 Each of the provided hooks is described in the following sections.
 They are somewhat ordered based on
@@ -101,7 +102,6 @@ const [petBreed, setPetBreed] = useState('Whippet');
 
 The `useState` function is a hook that takes the initial value of the state
 and returns an array containing the current value and a function to change it.
-Often the state is a primitive value, but it can also be an object or array.
 
 In this example,
 `petName` holds the current value of the state.
@@ -110,10 +110,13 @@ These "set" functions can be passed a new value, or
 a function that will be passed the current value and returns the new value.
 Calls to them trigger the component to be re-rendered.
 
-If a state value is an object, calls to the corresponding
-set function must pass an entire new object.
+Often the state is a primitive value,
+but it can also be an object or array (also an object).
+If a state value is an object,
+calls to the corresponding set function
+must pass an entire new value.
 The set functions do not merge the object
-passed to them with the current object value
+passed to them with the current value
 as is done by the `Component` `setState` method.
 
 The `useState` hook allows a component to use state
@@ -126,7 +129,7 @@ the current value for each piece of state.
 Initial values are only be applied during the first render.
 
 It's not necessary to understand how this works, but it is interesting.
-Conceptually, the state values are stored in a linked list.
+The state values are stored in a linked list.
 Each call to `useState` associates a state value
 with a different node in the linked list.
 In the example above, `petName` is stored in the first node
@@ -194,9 +197,8 @@ In subsequent renders, the order of execution is:
 If it is desirable to prevent the setup and cleanup code
 from running in every render, supply a second argument to
 the `useEffect` function that is an array of variables.
-If the value of any of these variables has changed since the last call,
-the cleanup and setup steps are executed again.
-Otherwise they are not.
+The cleanup and setup steps are only executed again if
+the value of any of these variables has changed since the last call.
 
 One use of an effect is to move focus to a particular input.
 This is demonstrated in the "Ref Hook" section below.
