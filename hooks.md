@@ -15,8 +15,8 @@ with class-based components.
 Existing apps can choose to gradually incorporate hooks
 or never use them.
 
-Eventually it will be possible to use a function component
-to do everything that is currently possible with a class component
+Eventually it will be possible to use function components
+to do everything that is currently possible with class components.
 However, currently there are some lifecycle methods
 (`componentDidCatch` and `getSnapshotBeforeUpdate`)
 whose functionality cannot yet be implemented when using hooks.
@@ -71,10 +71,10 @@ that should be configured with a value of "error".
 This rule assumes that any function whose name begins
 with "use" followed by an uppercase letter is a hook.
 It verifies that hooks are only called from
-a function component (name starts uppercase)
-or a custom hook function.
-It also verifies that hooks are called in the same order
-on every render.
+function components (name starts uppercase)
+or custom hook functions.
+It also verifies that hooks will be called
+in the same order on every render.
 
 A future version of create-react-app will automatically
 configure the `react-hooks/rules-of-hooks` ESLint rule.
@@ -90,7 +90,11 @@ how frequently they are expected to be used.
 
 ### State Hook
 
-This provides a way to add state to a function component.
+This provides a way to add state to function components.
+
+The `useState` function is a hook that takes the initial value of the state
+and returns an array containing the current value and a function to change it.
+It allows a component to use state without using the `this` keyword.
 
 For example, the following code can appear
 inside a function that defines a component.
@@ -99,9 +103,6 @@ inside a function that defines a component.
 const [petName, setPetName] = useState('Dasher');
 const [petBreed, setPetBreed] = useState('Whippet');
 ```
-
-The `useState` function is a hook that takes the initial value of the state
-and returns an array containing the current value and a function to change it.
 
 In this example,
 `petName` holds the current value of the state.
@@ -119,17 +120,52 @@ The set functions do not merge the object
 passed to them with the current value
 as is done by the `Component` `setState` method.
 
-The `useState` hook allows a component to use state
-without using the `this` keyword.
-
-Note that the `useState` calls will be made
+Note that the `useState` calls are made
 every time the component is rendered.
 This allows the component to obtain
 the current value for each piece of state.
 Initial values are only be applied during the first render.
 
+Here is a complete component definition that uses the state hook:
+
+```js
+import React, {useState} from 'react';
+
+export default function Pet() {
+  const [petName, setPetName] = useState('Dasher');
+  const [petBreed, setPetBreed] = useState('Whippet');
+  const changeBreed = e => setPetBreed(e.target.value);
+  const changeName = e => setPetName(e.target.value);
+  return (
+    <div>
+      <label htmlFor="name">
+        Name
+        <input id="name" onChange={changeName} value={petName} />
+      </label>
+      <br />
+      <label htmlFor="breed">
+        Breed
+        <select
+          id="breed"
+          onBlur={changeBreed}
+          onChange={changeBreed}
+          value={petBreed}
+        >
+          <option>Greyhound</option>
+          <option>Italian Greyhound</option>
+          <option>Whippet</option>
+        </select>
+      </label>
+      <div>
+        {petName} is a {petBreed}.
+      </div>
+    </div>
+  );
+}
+```
+
 It's not necessary to understand how this works, but it is interesting.
-The state values are stored in a linked list.
+The state values for a component are stored in a linked list.
 Each call to `useState` associates a state value
 with a different node in the linked list.
 In the example above, `petName` is stored in the first node
@@ -160,11 +196,9 @@ closing a network connection,
 and clearing a timeout or interval.
 
 An effect is configured by calling the `useEffect` function
-which takes a function.
-This function performs the setup.
-If this function returns another function,
-it is used for cleanup.
-If no cleanup is required, nothing is returned.
+which takes a function that performs the setup.
+If no cleanup is needed, this function returns nothing.
+If cleanup is need, this function returns another that performs the cleanup.
 
 For example:
 
@@ -186,22 +220,22 @@ In the first render of a component,
 the order of execution is:
 
 1. all the code in the component function
-2. the setup code in all the effects
+2. the setup code in all the effects in the order defined
 
 In subsequent renders, the order of execution is:
 
 1. all the code in the component function
-2. the cleanup code in all the effects
-3. the setup code in all the effects
+2. the cleanup code in all the effects in the order defined (not reverse order)
+3. the setup code in all the effects in the order defined
 
 If it is desirable to prevent the setup and cleanup code
 from running in every render, supply a second argument to
 the `useEffect` function that is an array of variables.
 The cleanup and setup steps are only executed again if
-the value of any of these variables has changed since the last call.
+any of these variables have changed since the last call.
 
 One use of an effect is to move focus to a particular input.
-This is demonstrated in the "Ref Hook" section below.
+This is demonstrated in the "Ref Hook" section later.
 
 ### Context Hook
 
@@ -210,7 +244,7 @@ consume context state in function components.
 
 Hooks do not change the way context providers are implemented.
 They are still implemented by creating a class that
-extends from `React.Component` and rendering a `Provider`.
+extends from `React.Component` and renders a `Provider`.
 For details, see <https://reactjs.org/docs/context.html>.
 
 Suppose a context provider has been implemented
@@ -274,7 +308,7 @@ for the `onChange` prop when the value of
 Avoiding the creation of new callback functions
 allows the React reconciliation process to correctly
 determine whether the component needs to be re-rendered.
-A performance benefit comes from avoiding unnecessary renders.
+Avoiding unnecessary renders provides a performance benefit.
 
 If the callback function does not depend on any variables,
 pass an empty array for the second argument.
@@ -357,6 +391,7 @@ The `useReducer` hook supports implementing components
 whose state is updated by dispatching actions
 that are handled by a reducer function.
 It is patterned after Redux.
+It takes a reducer function and the initial state.
 
 Here's an example of a very simple todo app
 that uses this hook. It uses Sass for styling.
@@ -437,12 +472,17 @@ function reducer(state, action) {
 export default function TodoList() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleAdd = () => dispatch({type: 'add-todo'});
-  const handleDelete = id => dispatch({type: 'delete-todo', payload: id});
-  const handleSubmit = e => e.preventDefault(); // prevents form submit
-  const handleText = e =>
-    dispatch({type: 'change-text', payload: e.target.value});
-  const handleToggleDone = id => dispatch({type: 'toggle-done', payload: id});
+  const handleAdd = useCallback(() => dispatch({type: 'add-todo'}));
+  const handleDelete = useCallback(id =>
+    dispatch({type: 'delete-todo', payload: id})
+  );
+  const handleSubmit = useCallback(e => e.preventDefault()); // prevents form submit
+  const handleText = useCallback(e =>
+    dispatch({type: 'change-text', payload: e.target.value})
+  );
+  const handleToggleDone = useCallback(id =>
+    dispatch({type: 'toggle-done', payload: id})
+  );
 
   return (
     <div className="todo-list">
@@ -477,7 +517,7 @@ export default function TodoList() {
 
 ### Ref Hook
 
-The `useRef` hook provides an alternative to
+The `useRef` hook provides an alternative to using
 class component instance variables in function components.
 Refs persist across renders.
 They differ from capturing data using the `useState` hook in that
@@ -501,15 +541,19 @@ To do this we need to:
 const inputRef = useRef();
 useEffect(() => inputRef.current.focus());
 
-<input
-  placeholder="todo text"
-  onChange={handleText}
-  ref={inputRef}
-  value={state.text}
-/>;
+return (
+  ...
+  <input
+    placeholder="todo text"
+    onChange={handleText}
+    ref={inputRef}
+    value={state.text}
+  />;
+  ...
+)
 ```
 
-The value held in a ref is not required to be DOM node.
+Ref values are not required to be DOM nodes.
 For example, suppose we wanted to log the number of todos
 that have been deleted every time one is deleted.
 To do this we need to:
@@ -580,6 +624,7 @@ that watches the browser window width.
 
 ```js
 function useWindowWidth() {
+  // This maintains the width state for any component that calls this function.
   const [width, setWidth] = useState(window.innerWidth);
   useEffect(() => {
     // setup steps
@@ -601,6 +646,8 @@ const width = useWindowWidth();
 
 Another example Dan Abramov shared simplifies
 associating a state value with a form input.
+It assumes the state does not need to be
+maintained in an ancestor component.
 
 ```js
 function useFormInput(initialValue) {
@@ -652,5 +699,3 @@ egghead.io Videos from Kent Dodds\
 
 "Everything you need to know about React Hooks" by Carl Vitullo\
 <https://medium.com/@vcarl/everything-you-need-to-know-about-react-hooks-8f680dfd4349>
-
-TODO: Extract more content from <https://reactjs.org/docs/hooks-faq.html>?
