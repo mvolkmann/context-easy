@@ -138,7 +138,7 @@ The context object currently implements nine methods.
 
 Updates to the context state happen asynchronously.
 If multiple context update methods are called in succession,
-it is likely that on the last change will be retained
+it is likely that only the last change will be retained
 because it will overwrite the others.
 
 To address this, all the context update methods return
