@@ -134,6 +134,31 @@ The context object currently implements nine methods.
   the value returned by passing the current value
   to the function provided as the second argument.
 
+## Multiple Updates
+
+Updates to the context state happen asynchronously.
+If multiple context update methods are called in succession,
+it is likely that on the last change will be retained
+because it will overwrite the others.
+
+To address this, all the context update methods return
+a `Promise` that is resolved after the update is complete.
+
+To safely make multiple updates,
+make the calls from an `async` function
+and use the `await` keyword in front of each call.
+
+For example:
+
+```js
+async function addTodo(context) {
+  const todo = {id: context.nextId, text: context.text, done: false};
+  await context.push('todos', todo);
+  await context.set('text', '');
+  await context.increment('nextId');
+}
+```
+
 ## Re-rendering
 
 The `useContext` hook subscribes components that call it

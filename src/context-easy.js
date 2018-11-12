@@ -86,18 +86,24 @@ export class EasyProvider extends Component {
       validateNumber('decrement', 'delta', delta);
       const value = get(path, this.state);
       validateNumber('decrement', path, value);
-      this.setState(
-        update(path, n => n - delta, this.state),
-        log && log('decrement', this.state, path, 'by', delta)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          update(path, n => n - delta, this.state),
+          log && log('decrement', this.state, path, 'by', delta)
+        );
+        resolve();
+      });
     },
 
     delete: path => {
       validatePath('delete', path);
-      this.setState(
-        omit(path, this.state),
-        () => log && log('delete', this.state, path)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          omit(path, this.state),
+          () => log && log('delete', this.state, path)
+        );
+        resolve();
+      });
     },
 
     filter: (path, fn) => {
@@ -105,10 +111,13 @@ export class EasyProvider extends Component {
       const value = get(path, this.state);
       validateArray('filter', path, value);
       validateFunction('filter', fn);
-      this.setState(
-        update(path, arr => arr.filter(fn)),
-        () => log && log('filter', this.state, path, 'using', fn)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          update(path, arr => arr.filter(fn)),
+          () => log && log('filter', this.state, path, 'using', fn)
+        );
+        resolve();
+      });
     },
 
     increment: (path, delta = 1) => {
@@ -116,10 +125,13 @@ export class EasyProvider extends Component {
       validateNumber('increment', 'delta', delta);
       const value = get(path, this.state);
       validateNumber('increment', path, value);
-      this.setState(
-        update(path, n => n + delta, this.state),
-        () => log && log('increment', this.state, path, 'by', delta)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          update(path, n => n + delta, this.state),
+          () => log && log('increment', this.state, path, 'by', delta)
+        );
+        resolve();
+      });
     },
 
     // Note that this is a method and is different
@@ -138,37 +150,49 @@ export class EasyProvider extends Component {
       const value = get(path, this.state);
       validateArray('map', path, value);
       validateFunction('map', fn);
-      this.setState(
-        update(path, arr => arr.map(fn)),
-        () => log && log('map', this.state, path, 'using', fn)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          update(path, arr => arr.map(fn)),
+          () => log && log('map', this.state, path, 'using', fn)
+        );
+        resolve();
+      });
     },
 
     push: (path, ...newValues) => {
       validatePath('push', path);
       const value = get(path, this.state);
       validateArray('push', path, value);
-      this.setState(
-        set(path, [...value, ...newValues]),
-        () => log && log('push', this.state, path, 'with', ...newValues)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          set(path, [...value, ...newValues]),
+          () => log && log('push', this.state, path, 'with', ...newValues)
+        );
+        resolve();
+      });
     },
 
     set: (path, value) => {
       validatePath('set', path);
-      this.setState(
-        set(path, value, this.state),
-        () => log && log('set', this.state, path, 'to', value)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          set(path, value, this.state),
+          () => log && log('set', this.state, path, 'to', value)
+        );
+        resolve();
+      });
     },
 
     transform: (path, fn) => {
       validatePath('transform', path);
       validateFunction('transform', fn);
-      this.setState(
-        update(path, fn, this.state),
-        () => log && log('transform', this.state, path, 'using', fn)
-      );
+      return new Promise(resolve => {
+        this.setState(
+          update(path, fn, this.state),
+          () => log && log('transform', this.state, path, 'using', fn)
+        );
+        resolve();
+      });
     }
   };
 

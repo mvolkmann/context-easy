@@ -4,16 +4,20 @@ import {render, cleanup, fireEvent} from 'react-testing-library';
 import {EasyContext, EasyProvider} from './context-easy';
 
 describe('context-easy', () => {
-  afterEach(cleanup);
+  let initialState;
 
-  function tester(methodName, methodArgs, expectedValue) {
-    const initialState = {
+  beforeEach(() => {
+    initialState = {
       foo: {
         bar: 2,
         baz: [1, 2, 3, 4]
       }
     };
+  });
 
+  afterEach(cleanup);
+
+  function tester(methodName, methodArgs, expectedValue) {
     let context;
 
     function TestComponent() {
@@ -65,5 +69,34 @@ describe('context-easy', () => {
 
   test('transform', () => {
     tester('transform', ['foo.bar', n => n * 3], 6);
+  });
+
+  // This tests making multiple updates.
+  test('multiple', done => {
+    let context;
+
+    function TestComponent() {
+      context = useContext(EasyContext);
+      async function doIt() {
+        await context.increment('foo.bar');
+        await context.filter('foo.baz', n => n > 2);
+      }
+      return <button onClick={doIt}>Click</button>;
+    }
+
+    EasyProvider.initialized = false; // very important!
+    const {getByText} = render(
+      <EasyProvider initialState={initialState} validate>
+        <TestComponent />
+      </EasyProvider>
+    );
+
+    const button = getByText('Click');
+    fireEvent.click(button);
+    setTimeout(() => {
+      expect(get('foo.bar', context)).toBe(3);
+      expect(get('foo.baz', context)).toEqual([3, 4]);
+      done();
+    });
   });
 });
