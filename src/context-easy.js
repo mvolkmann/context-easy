@@ -120,6 +120,8 @@ export class EasyProvider extends Component {
       });
     },
 
+    get: path => get(path, this.state),
+
     increment: (path, delta = 1) => {
       validatePath('increment', path);
       validateNumber('increment', 'delta', delta);

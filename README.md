@@ -196,5 +196,120 @@ These are useful in development, but typically should not be used in production.
 When the NODE_ENV environment variable is set to "production",
 these options are ignored.
 
+## Path Concerns
+
+When the layout of the state changes, it is necessary
+to change state paths throughout the code.
+For small apps or apps that use a small number of state paths
+this is likely not a concern.
+For large apps, consider creating a source file that exports
+constants for the state paths (perhaps named `path-constants.js`)
+and use those when calling every context-easy function that requires a path.
+
+For example,
+
+```js
+const GAME_HIGH_SCORE = 'game.statistics.highScore';
+const USER_CITY = 'user.address.city';
+...
+import {GAME_HIGH_SCORE, USER_CITY} from './path-constants';
+context.set(USER_CITY, 'St. Louis');
+context.transform(GAME_HIGH_SCORE, score => score + 1);
+```
+
+With this approach, if the layout of the state changes
+it is only necessary to update these constants.
+
+## Form Elements Tied to State Paths
+
+It is common to have `input`, `select`, and `textarea` elements
+with `onChange` handlers that get their value from `event.target.value`
+and dispatch an action where the value is the payload.
+An alternative is to use the provided `Input`, `Select`, and `TextArea` components
+as follows:
+
+HTML `input` elements can be replaced by the `Input` component.
+For example,
+
+```js
+<Input path="user.firstName" />
+```
+
+The `type` property defaults to `'text'`,
+but can be set to any valid value including `'checkbox'`.
+
+The value used by the `input` is the state value at the specified path.
+When the user changes the value, this component
+updates the value at that path in the state.
+
+To perform additional processing of changes such as validation,
+supply an `onChange` prop that refers to a function.
+
+HTML `textarea` elements can be replaced by the `TextArea` component.
+For example,
+
+```js
+<TextArea path="feedback.comment" />
+```
+
+HTML `select` elements can be replaced by the `Select` component.
+For example,
+
+```js
+<Select path="user.favoriteColor">
+  <option>red</option>
+  <option>green</option>
+  <option>blue</option>
+</Select>
+```
+
+If the `option` elements have a value attribute, that value
+will be used instead of the text inside the `option`.
+
+For a set of radio buttons, use the `RadioButtons` component.
+For example,
+
+```js
+<RadioButtons className="flavor" list={radioButtonList} path="favoriteFlavor" />
+```
+
+where radioButtonList is set as follows:
+
+```js
+const radioButtonList = [
+  {text: 'Chocolate', value: 'choc'},
+  {text: 'Strawberry', value: 'straw'},
+  {text: 'Vanilla', value: 'van'}
+];
+```
+
+When a radio button is clicked the state property `favoriteFlavor`
+will be set the value of that radio button.
+
+For a set of checkboxes, use the `Checkboxes` component.
+For example,
+
+```js
+<Checkboxes className="colors" list={checkboxList} />
+```
+
+where checkboxList is set as follows:
+
+```js
+const checkboxList = [
+  {text: 'Red', path: 'color.red'},
+  {text: 'Green', path: 'color.green'},
+  {text: 'Blue', path: 'color.blue'}
+];
+```
+
+When a checkbox is clicked the boolean value at the corresponding path
+will be toggled between false and true.
+
+All of these components take a `path` prop
+which is used to update the value of the component.
+
+## Example app
+
 The GitHub repository at <https://github.com/mvolkmann/context-easy-demo>
 provides an example application that uses context-easy.
