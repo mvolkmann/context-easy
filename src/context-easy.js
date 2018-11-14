@@ -3,7 +3,7 @@ import {get, omit, set, update} from 'lodash/fp';
 import React, {Component} from 'react';
 
 const MSG_PREFIX = 'easy-context method ';
-const STATE_KEY = 'context-easy-State';
+const STATE_KEY = 'context-easy-state';
 const VERSION_KEY = '@reduxEasyVersion';
 
 export const EasyContext = React.createContext();
@@ -48,8 +48,8 @@ export function loadState() {
   // last saved in sessionStorage, assume that the shape of the state
   // may have changed and revert to initialState.
   const ssVersion = sessionStorage.getItem(VERSION_KEY);
-  if (version === null || String(version) !== ssVersion) {
-    sessionStorage.setItem(STATE_KEY, cleanState);
+  if (String(version) !== ssVersion) {
+    sessionStorage.setItem(STATE_KEY, JSON.stringify(cleanState));
     sessionStorage.setItem(VERSION_KEY, version);
     return cleanState;
   }
@@ -292,10 +292,6 @@ export class EasyProvider extends Component {
       if (!sessionStorageOptOut) {
         const json = JSON.stringify(replacerFn(this.state));
         sessionStorage.setItem(STATE_KEY, json);
-        console.log(
-          'context-easy.js saveState:',
-          sessionStorage.getItem(STATE_KEY)
-        );
       }
 
       if (callback) callback();
