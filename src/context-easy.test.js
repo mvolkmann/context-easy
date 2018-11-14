@@ -99,4 +99,30 @@ describe('context-easy', () => {
       done();
     });
   });
+
+  test('options', () => {
+    let context;
+
+    function TestComponent() {
+      context = useContext(EasyContext);
+      async function doIt() {
+        await context.increment('foo.bar');
+        await context.filter('foo.baz', n => n > 2);
+      }
+      return <button onClick={doIt}>Click</button>;
+    }
+
+    EasyProvider.initialized = false; // very important!
+    const options = {
+      replacerFn: state => state,
+      reviverFn: state => state,
+      sessionStorageOptOut: false,
+      version: 'some-version'
+    };
+    render(
+      <EasyProvider initialState={initialState} options={options}>
+        <TestComponent />
+      </EasyProvider>
+    );
+  });
 });
