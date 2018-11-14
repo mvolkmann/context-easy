@@ -27,12 +27,10 @@ export default function Input(props) {
   if (value === undefined) value = isCheckbox ? false : '';
 
   const propName = isCheckbox ? 'checked' : 'value';
-  const inputProps = {
-    autoFocus,
-    type: 'text',
-    ...props,
+  // npm run build fails when object spread is used
+  const inputProps = Object.assign({autoFocus, type: 'text'}, props, {
     [propName]: value
-  };
+  });
 
   if (onEnter) {
     inputProps.onKeyPress = event => {

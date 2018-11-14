@@ -31,7 +31,7 @@ To use context-easy:
 1. Import `EasyProvider`.
 
 ```js
-import {EasyProvider} from './context-easy';
+import {EasyProvider} from 'context-easy';
 ```
 
 2. Define the initial state. For example:

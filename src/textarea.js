@@ -16,7 +16,7 @@ export default function TextArea(props) {
   const {path} = props;
   const value = context.get(path);
 
-  const textAreaProps = {...props, value};
+  const textAreaProps = Object.assign({}, props, {value});
 
   return <textarea {...textAreaProps} onChange={handleChange} />;
 }
