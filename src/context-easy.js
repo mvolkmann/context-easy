@@ -292,6 +292,10 @@ export class EasyProvider extends Component {
       if (!sessionStorageOptOut) {
         const json = JSON.stringify(replacerFn(this.state));
         sessionStorage.setItem(STATE_KEY, json);
+        console.log(
+          'context-easy.js saveState:',
+          sessionStorage.getItem(STATE_KEY)
+        );
       }
 
       if (callback) callback();
