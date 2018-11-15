@@ -27,8 +27,9 @@ describe('context-easy', () => {
     }
 
     EasyProvider.initialized = false; // very important!
+    const options = {sessionStorageOptOut: true};
     const {getByText} = render(
-      <EasyProvider initialState={initialState} validate>
+      <EasyProvider initialState={initialState} options={options} validate>
         <TestComponent />
       </EasyProvider>
     );
