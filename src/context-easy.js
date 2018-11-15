@@ -1,3 +1,4 @@
+import {throttle} from 'lodash/function';
 import {bool, func, node, shape, string} from 'prop-types';
 import {get, omit, set, update} from 'lodash/fp';
 import React, {Component} from 'react';
@@ -288,12 +289,16 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
-    this.setState(stateOrFn, () => {
-      if (!sessionStorageOptOut) {
+    if (!this.throttledSave) {
+      this.throttledSave = throttle(() => {
+        console.log('context-easy.js saveState: saving to sessionStorage');
         const json = JSON.stringify(replacerFn(this.state));
         sessionStorage.setItem(STATE_KEY, json);
-      }
+      }, 1000);
+    }
 
+    this.setState(stateOrFn, () => {
+      if (!sessionStorageOptOut) this.throttledSave();
       if (callback) callback();
     });
   };
