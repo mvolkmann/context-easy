@@ -4,6 +4,7 @@ import React, {useCallback, useContext} from 'react';
 import {EasyContext} from './context-easy';
 
 export default function Input(props) {
+  console.log('input.js Input: props =', props);
   const {autoFocus, onChange, onEnter, path, type} = props;
   const context = useContext(EasyContext);
 

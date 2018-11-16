@@ -266,6 +266,7 @@ export class EasyProvider extends Component {
   };
 
   componentDidMount() {
+    console.log('context-easy.js componentDidMount: entered');
     const {options} = this.props;
 
     if (!options.log || isProd) log = noOp;
@@ -304,6 +305,7 @@ export class EasyProvider extends Component {
   };
 
   render() {
+    console.log('context-easy.js componentDidMount: render');
     return (
       <EasyContext.Provider value={this.state}>
         {this.props.children}
