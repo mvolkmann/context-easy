@@ -9,6 +9,7 @@ export default function Input(props) {
 
   const handleChange = useCallback(event => {
     const {checked, value} = event.target;
+    console.log('input.js handleChange: value =', value);
 
     let v = value;
     if (type === 'checkbox') {
@@ -17,6 +18,8 @@ export default function Input(props) {
       if (value.length) v = Number(value);
     }
 
+    console.log('input.js handleChange: path =', path);
+    console.log('input.js handleChange: v =', v);
     if (path) context.set(path, v);
     if (onChange) onChange(event);
   });

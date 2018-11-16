@@ -240,6 +240,8 @@ export class EasyProvider extends Component {
     },
 
     set: (path, value) => {
+      console.log('context-easy.js set: path =', path);
+      console.log('context-easy.js set: value =', value);
       validatePath('set', path);
       return new Promise(resolve => {
         this.saveState(
@@ -287,6 +289,7 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
+    console.log('context-easy.js saveState: stateOrFn =', stateOrFn);
     if (!this.throttledSave) {
       this.throttledSave = throttle(() => {
         const json = JSON.stringify(replacerFn(this.state));
