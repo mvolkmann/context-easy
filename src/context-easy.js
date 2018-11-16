@@ -291,7 +291,6 @@ export class EasyProvider extends Component {
   saveState = (stateOrFn, callback) => {
     if (!this.throttledSave) {
       this.throttledSave = throttle(() => {
-        console.log('context-easy.js saveState: saving to sessionStorage');
         const json = JSON.stringify(replacerFn(this.state));
         sessionStorage.setItem(STATE_KEY, json);
       }, 1000);
