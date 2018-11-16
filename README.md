@@ -183,18 +183,29 @@ return useCallback(<div>component JSX goes here.</div>, [count, name]);
 
 ## Options
 
-The `EasyProvider` component accepts two optional props.
+The `EasyProvider` component accepts an `options` prop
+whose value is an object that specifies the desired options.
 
 To log all state changes in the devtools console,
-add the `log` prop.
+set the `log` option to `true`.
 
 To validate all method calls made on the context object
 and throw an error when they are called incorrectly,
-add the `validate` prop.
+set the `validate` option to `true`.
 
-These are useful in development, but typically should not be used in production.
-When the NODE_ENV environment variable is set to "production",
-these options are ignored.
+These are useful in development,
+but typically should not be used in production.
+If the `NODE_ENV` environment variable is set to "production",
+the `log` and `validate` options are ignored.
+
+The `sessionStorageOptOut` option
+is described in the "SessionStorage" section below.
+
+The `version` option
+is described in the "Versions" section below.
+
+The `replacerFn` and `reviverFn` options
+are described in the "Sensitive Data" section below.
 
 ## Path Concerns
 
@@ -311,10 +322,13 @@ which is used to update the value of the component.
 
 ## SessionStorage
 
-By default, all the context state is automatically saved in
-`sessionStorage` as a JSON string on every state change.
-This is automatically reloaded into the context state
-if the browser is refreshed to avoid losing state.
+Typically React state is lost when users refresh the browser.
+To avoid this, `sessionStorage` is used to save all the
+context state as a JSON string on every state change.
+This is throttled so `sessionStorage` is
+not updated more frequently than once per second.
+The state in `sessionStorage` is automatically reloaded
+into the context state if the browser is refreshed.
 
 To opt out of this behavior, pass an options object to
 `EasyProvider` as follows:

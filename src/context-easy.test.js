@@ -27,9 +27,9 @@ describe('context-easy', () => {
     }
 
     EasyProvider.initialized = false; // very important!
-    const options = {sessionStorageOptOut: true};
+    const options = {sessionStorageOptOut: true, validate: true};
     const {getByText} = render(
-      <EasyProvider initialState={initialState} options={options} validate>
+      <EasyProvider initialState={initialState} options={options}>
         <TestComponent />
       </EasyProvider>
     );
@@ -86,8 +86,9 @@ describe('context-easy', () => {
     }
 
     EasyProvider.initialized = false; // very important!
+    const options = {validate: true};
     const {getByText} = render(
-      <EasyProvider initialState={initialState} validate>
+      <EasyProvider initialState={initialState} options={options}>
         <TestComponent />
       </EasyProvider>
     );

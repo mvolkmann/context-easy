@@ -132,19 +132,17 @@ export class EasyProvider extends Component {
 
   static propTypes = {
     children: node,
-    log: bool,
     options: shape({
+      log: bool,
       replacerFn: func,
       reviverFn: func,
       sessionStorageOptOut: bool,
+      validate: bool,
       version: string
-    }),
-    validate: bool
+    })
   };
   static defaultProps = {
-    log: false,
-    options: {},
-    validate: false
+    options: {}
   };
 
   state = {
@@ -266,11 +264,11 @@ export class EasyProvider extends Component {
   };
 
   componentDidMount() {
-    const {log: shouldLog, options, validate} = this.props;
+    const {options} = this.props;
 
-    if (!shouldLog || isProd) log = noOp;
+    if (!options.log || isProd) log = noOp;
 
-    if (!validate || isProd) {
+    if (!options.validate || isProd) {
       validateArray = noOp;
       validateFunction = noOp;
       validateNumber = noOp;
