@@ -23,6 +23,7 @@ export default function Input(props) {
     if (path) context.set(path, v);
     if (onChange) onChange(event);
   });
+  console.log('input.js Input: handleChange =', handleChange);
 
   let value = context.get(path);
 
@@ -42,6 +43,8 @@ export default function Input(props) {
     delete inputProps.onEnter;
   }
 
+  console.log('input.js Input: inputProps =', inputProps);
+  console.log('input.js Input: handleChange =', handleChange);
   return <input {...inputProps} onChange={handleChange} />;
 }
 
