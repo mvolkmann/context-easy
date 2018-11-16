@@ -1,11 +1,12 @@
 {
   "name": "context-easy",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
     "format": "prettier --write 'src/**/*.{js,scss}'",
     "lint": "eslint --quiet src --ext .js",
+    "prepublish": "babel src -d lib",
     "prepush": "npm run verify",
     "test": "react-scripts test",
     "test-no-watch": "cross-env CI=true react-scripts test --env=jsdom",
