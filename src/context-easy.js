@@ -240,8 +240,6 @@ export class EasyProvider extends Component {
     },
 
     set: (path, value) => {
-      console.log('context-easy.js set: path =', path);
-      console.log('context-easy.js set: value =', value);
       validatePath('set', path);
       return new Promise(resolve => {
         this.saveState(
@@ -266,7 +264,6 @@ export class EasyProvider extends Component {
   };
 
   componentDidMount() {
-    console.log('context-easy.js componentDidMount: entered');
     const {options} = this.props;
 
     if (!options.log || isProd) log = noOp;
@@ -290,7 +287,6 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
-    console.log('context-easy.js saveState: stateOrFn =', stateOrFn);
     if (!this.throttledSave) {
       this.throttledSave = throttle(() => {
         const json = JSON.stringify(replacerFn(this.state));
@@ -305,7 +301,6 @@ export class EasyProvider extends Component {
   };
 
   render() {
-    console.log('context-easy.js componentDidMount: render');
     return (
       <EasyContext.Provider value={this.state}>
         {this.props.children}

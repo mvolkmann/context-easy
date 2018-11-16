@@ -4,13 +4,11 @@ import React, {useCallback, useContext} from 'react';
 import {EasyContext} from './context-easy';
 
 export default function Input(props) {
-  console.log('input.js Input: props =', props);
   const {autoFocus, onChange, onEnter, path, type} = props;
   const context = useContext(EasyContext);
 
   const handleChange = useCallback(event => {
     const {checked, value} = event.target;
-    console.log('input.js handleChange: value =', value);
 
     let v = value;
     if (type === 'checkbox') {
@@ -19,12 +17,9 @@ export default function Input(props) {
       if (value.length) v = Number(value);
     }
 
-    console.log('input.js handleChange: path =', path);
-    console.log('input.js handleChange: v =', v);
     if (path) context.set(path, v);
     if (onChange) onChange(event);
   });
-  console.log('input.js Input: handleChange =', handleChange);
 
   let value = context.get(path);
 
@@ -44,8 +39,6 @@ export default function Input(props) {
     delete inputProps.onEnter;
   }
 
-  console.log('input.js Input: inputProps =', inputProps);
-  console.log('input.js Input: handleChange =', handleChange);
   return <input {...inputProps} onChange={handleChange} />;
 }
 
