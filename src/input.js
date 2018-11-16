@@ -28,9 +28,12 @@ export default function Input(props) {
 
   const propName = isCheckbox ? 'checked' : 'value';
   // npm run build fails when object spread is used
-  const inputProps = Object.assign({autoFocus, type: 'text'}, props, {
+  const inputProps = {
+    autoFocus,
+    type: 'text',
+    ...props,
     [propName]: value
-  });
+  };
 
   if (onEnter) {
     inputProps.onKeyPress = event => {

@@ -18,7 +18,7 @@ export default function Select(props) {
   let value = context.get(path);
   if (value === undefined) value = '';
 
-  const selectProps = Object.assign({}, props, {value});
+  const selectProps = {...props, value};
   delete selectProps.dispatch;
 
   return (

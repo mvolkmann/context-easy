@@ -12,9 +12,9 @@ export const EasyContext = React.createContext();
 const isProd = process.env.NODE_ENV === 'production';
 
 let initialState = {},
+  persist,
   replacerFn,
   reviverFn,
-  sessionStorageOptOut,
   version;
 
 function copyWithoutFunctions(obj) {
@@ -41,7 +41,7 @@ const identityFn = state => state;
 export function loadState() {
   const cleanState = replacerFn(initialState);
 
-  if (sessionStorageOptOut) return cleanState;
+  if (!persist) return cleanState;
 
   const {sessionStorage} = window; // not available in tests
 
@@ -117,8 +117,8 @@ let validatePath = (methodName, path) => {
  * reviverFn: function that is passed the state after it is retrieved from
  *   sessionStorage and returns the state that the app should actually use;
  *   can be used to supply sensitive data that is not in sessionStorage
- * sessionStorageOptOut: optional boolean
- *   (true to not save state to session storage)
+ * persist: optional boolean
+ *   (defaults to true; set to false to not save state to sessionStorage)
  * version: a version string that should be changed
  *   when the shape of the state changes
  */
@@ -136,7 +136,7 @@ export class EasyProvider extends Component {
       log: bool,
       replacerFn: func,
       reviverFn: func,
-      sessionStorageOptOut: bool,
+      persist: bool,
       validate: bool,
       version: string
     })
@@ -279,7 +279,7 @@ export class EasyProvider extends Component {
       initialState = {},
       replacerFn = identityFn,
       reviverFn = identityFn,
-      sessionStorageOptOut,
+      persist = true,
       version = null
     } = options);
 
@@ -295,7 +295,7 @@ export class EasyProvider extends Component {
     }
 
     this.setState(stateOrFn, () => {
-      if (!sessionStorageOptOut) this.throttledSave();
+      if (persist) this.throttledSave();
       if (callback) callback();
     });
   };

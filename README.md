@@ -198,7 +198,7 @@ but typically should not be used in production.
 If the `NODE_ENV` environment variable is set to "production",
 the `log` and `validate` options are ignored.
 
-The `sessionStorageOptOut` option
+The `persist` option
 is described in the "SessionStorage" section below.
 
 The `version` option
@@ -334,7 +334,7 @@ To opt out of this behavior, pass an options object to
 `EasyProvider` as follows:
 
 ```js
-const options = {sessionStorageOptOut: true};
+const options = {persist: false}; // defaults to true
 ...
 return (
   <EasyProvider initialState={initialState} options={options} validate>
