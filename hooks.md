@@ -693,6 +693,8 @@ However, you may not want to use them in production apps
 just yet since they are still considered experimental
 and their API may change.
 
+Thanks to Jason Schnindler for reviewing this article!
+
 ## Resources
 
 "React Today and Tomorrow and 90% Cleaner React" talk at React Conf 2018
