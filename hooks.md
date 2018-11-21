@@ -17,9 +17,9 @@ or never use them.
 
 Eventually it will be possible to use function components
 to do everything that is currently possible with class components.
-However, currently there are some lifecycle methods
+However, there are some lifecycle methods
 (`componentDidCatch` and `getSnapshotBeforeUpdate`)
-whose functionality cannot yet be implemented when using hooks.
+whose functionality cannot yet be implemented using hooks.
 
 Hooks are currently considered experimental
 and the API may still change.
@@ -54,11 +54,11 @@ Hook function names should start with "use".
 This convention allows linting rules to check for proper use of hooks
 and provides a clue that the function may access state.
 
-Hook functions can only be called in
+Hook functions should only be called in
 function-based components and in custom hooks.
 
-Hook functions cannot be called conditionally.
-This means they cannot be called in
+Hook functions should not be called conditionally.
+This means they should not be called in
 if/else blocks, loops, or nested functions.
 This ensures that for any component,
 the same hooks are invoked
@@ -112,13 +112,14 @@ a function that will be passed the current value and returns the new value.
 Calls to them trigger the component to be re-rendered.
 
 Often the state is a primitive value,
-but it can also be an object or array (also an object).
+but it can also be an object.
 If a state value is an object,
 calls to the corresponding set function
 must pass an entire new value.
 The set functions do not merge the object
 passed to them with the current value
-as is done by the `Component` `setState` method.
+as is done by the `Component` `setState` method
+which merges the top-level properties.
 
 Note that the `useState` calls are made
 every time the component is rendered.
@@ -171,6 +172,12 @@ with a different node in the linked list.
 In the example above, `petName` is stored in the first node
 and `petBreed` is stored in the second node.
 
+The `useState` hook adds state to the component that uses it.
+The custom hook `useTopState` adds state outside of components
+that can be shared with any number of components.
+If any component changes the state, all the components that use it are re-rendered.
+See <https://www.npmjs.com/package/top-state-hook>.
+
 ### Effect Hook
 
 The `useEffect` hook provides an alternative to lifecycle methods like
@@ -198,7 +205,8 @@ and clearing a timeout or interval.
 An effect is configured by calling the `useEffect` function
 which takes a function that performs the setup.
 If no cleanup is needed, this function returns nothing.
-If cleanup is need, this function returns another that performs the cleanup.
+If cleanup is needed, this function returns
+another function that performs the cleanup.
 
 For example:
 
@@ -316,8 +324,6 @@ This causes `useCallback` to always return the same function.
 If the second argument is omitted,
 a new function will be returned on every call
 which defeats the purpose.
-(Why doesn't `useCallback` treat omitting the
-second argument the same as passing an empty array?)
 
 The `useCallback` hook can also serve as a substitute
 for the lifecycle method `shouldComponentUpdate`
@@ -459,8 +465,8 @@ function reducer(state, action) {
     }
     case 'toggle-done': {
       const id = payload;
-      const newTodos = todos.map(
-        todo => (todo.id === id ? {...todo, done: !todo.done} : todo)
+      const newTodos = todos.map(todo =>
+        todo.id === id ? {...todo, done: !todo.done} : todo
       );
       return {...state, todos: newTodos};
     }

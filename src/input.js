@@ -27,7 +27,6 @@ export default function Input(props) {
   if (value === undefined) value = isCheckbox ? false : '';
 
   const propName = isCheckbox ? 'checked' : 'value';
-  // npm run build fails when object spread is used
   const inputProps = {
     autoFocus,
     type: 'text',
