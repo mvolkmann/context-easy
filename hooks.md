@@ -15,8 +15,8 @@ with class-based components.
 Existing apps can choose to gradually incorporate hooks
 or never use them.
 
-Eventually it will be possible to use function components
-to do everything that is currently possible with class components.
+Eventually it will be possible to use function components to
+do everything that is currently possible with class components.
 However, there are some lifecycle methods
 (`componentDidCatch` and `getSnapshotBeforeUpdate`)
 whose functionality cannot yet be implemented using hooks.
@@ -627,6 +627,7 @@ reused in multiple function components.
 
 For example, Dan Abramov demonstrated a custom hook
 that watches the browser window width.
+(See the video link in references.)
 
 ```js
 function useWindowWidth() {
@@ -654,6 +655,7 @@ Another example Dan Abramov shared simplifies
 associating a state value with a form input.
 It assumes the state does not need to be
 maintained in an ancestor component.
+(See the video link in references.)
 
 ```js
 function useFormInput(initialValue) {
