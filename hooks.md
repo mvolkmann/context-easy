@@ -4,8 +4,9 @@
 
 Hooks are a feature added in React 16.7.0-alpha.0.
 They enable implementing stateful components
-with functions instead of classes. There are no plans
-to remove existing ways of implementing components.
+with functions instead of classes.
+
+There are no plans to remove existing ways of implementing components.
 Hooks simply provide a new way that
 most developers will find easier to understand
 and is backward-compatible with existing code.
@@ -90,11 +91,11 @@ how frequently they are expected to be used.
 
 ### State Hook
 
-This provides a way to add state to function components.
-
-The `useState` function is a hook that takes the initial value of the state
-and returns an array containing the current value and a function to change it.
-It allows a component to use state without using the `this` keyword.
+The `useState` function is a hook that
+provides a way to add state to function components.
+It takes the initial value of the state and
+returns an array containing the current value and a function to change it.
+This allows a component to use state without using the `this` keyword.
 
 For example, the following code can appear
 inside a function that defines a component.
@@ -185,18 +186,18 @@ The `useEffect` hook provides an alternative to lifecycle methods like
 in function components.
 
 Effects have two phases, setup and cleanup.
+
 Think of setup as being performed when a class component
 would call `componentDidMount` or `componentDidUpdate`,
 which is after React updates the DOM.
-Think of cleanup as being performed when a class component
-would call `componentWillUnmount`.
-
 Examples of setup functionality include
 fetching data (ex. calling a REST service),
 registering an event listener,
 opening a network connection,
 and starting a timeout or interval.
 
+Think of cleanup as being performed when a class component
+would call `componentWillUnmount`.
 Examples of cleanup functionality include
 unregistering an event listener,
 closing a network connection,
@@ -313,6 +314,7 @@ These lines have the same functionality,
 but the second line only creates a new function
 for the `onChange` prop when the value of
 `color` or `size` has changed since the last render.
+
 Avoiding the creation of new callback functions
 allows the React reconciliation process to correctly
 determine whether the component needs to be re-rendered.
@@ -373,7 +375,7 @@ While both provide memoization,
 
 ### React.memo function
 
-The `React.memo` function, not a hook, that was added in React 16.6.
+The `React.memo` function, not a hook, was added in React 16.6.
 It memoizes a function component so
 it is only re-rendered if at least one of its props has changed.
 This does what class components do when they
@@ -693,7 +695,7 @@ However, you may not want to use them in production apps
 just yet since they are still considered experimental
 and their API may change.
 
-Thanks to Jason Schnindler for reviewing this article!
+Thanks to Jason Schindler for reviewing this article!
 
 ## Resources
 
