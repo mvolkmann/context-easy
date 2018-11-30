@@ -6,6 +6,9 @@ Hooks are a feature added in React 16.7.0-alpha.0.
 They enable implementing stateful components
 with functions instead of classes.
 
+Hooks are expected to be ready for production use
+in React 16.7 which should be released in Q1 2019.
+
 There are no plans to remove existing ways of implementing components.
 Hooks simply provide a new way that
 most developers will find easier to understand
