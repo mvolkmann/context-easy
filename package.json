@@ -1,7 +1,12 @@
 {
   "name": "context-easy",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvolkmann/context-easy.git"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "babel src -d lib",
     "format": "prettier --write 'src/**/*.{js,scss}'",
