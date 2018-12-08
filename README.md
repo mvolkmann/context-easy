@@ -65,7 +65,7 @@ In function components that need to access and/or modify this state:
 
 ```js
 import React, {useContext} from 'react';
-import {EasyContext} from './context-easy';
+import {EasyContext} from 'context-easy';
 ```
 
 2. Get the context object inside the function component.

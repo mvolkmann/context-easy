@@ -646,7 +646,7 @@ function useWindowWidth() {
       // cleanup steps
       windowRemoveEventListener('resize', handleResize);
     };
-  });
+  }, []);
 }
 ```
 
