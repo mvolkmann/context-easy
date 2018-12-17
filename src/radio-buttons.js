@@ -28,6 +28,7 @@ export default function RadioButtons(props) {
   const value = context.get(path);
 
   const radioButtons = list.map(obj => {
+    if (!obj.value) obj.value = obj.text;
     if (testId) extraProps['data-testid'] = testId + '-' + obj.value;
     return (
       <div key={obj.value}>
