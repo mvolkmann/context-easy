@@ -189,11 +189,9 @@ export class EasyProvider extends Component {
     get: path => get(path, this.state),
 
     increment: (path, delta = 1) => {
-      console.log('context-easy.js increment: path =', path);
       validatePath('increment', path);
       validateNumber('increment', 'delta', delta);
       const value = get(path, this.state);
-      console.log('context-easy.js increment: value =', value);
       validateNumber('increment', path, value);
       return new Promise(resolve => {
         this.saveState(
@@ -290,7 +288,6 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
-    console.log('context-easy.js saveState: stateOrFn =', stateOrFn);
     if (!this.throttledSave) {
       this.throttledSave = throttle(() => {
         const json = JSON.stringify(replacerFn(this.state));
