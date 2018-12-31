@@ -162,12 +162,12 @@ export class EasyProvider extends Component {
     },
 
     delete: path => {
+      console.log('context-easy.js delete: path =', path);
       validatePath('delete', path);
       return new Promise(resolve => {
-        this.saveState(
-          omit(path, this.state),
-          () => log && log('delete', this.state, path)
-        );
+        const newState = omit(path, this.state);
+        console.log('context-easy.js delete: newState =', newState);
+        this.saveState(newState, () => log && log('delete', this.state, path));
         resolve();
       });
     },
