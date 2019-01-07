@@ -1,5 +1,5 @@
 import {throttle} from 'lodash/function';
-import {bool, func, node, shape, string} from 'prop-types';
+import {bool, func, node, object, shape, string} from 'prop-types';
 import {get, omit, set, update} from 'lodash/fp';
 import React, {Component} from 'react';
 
@@ -125,6 +125,7 @@ let validatePath = (methodName, path) => {
  */
 export class EasyProvider extends Component {
   static initialized = false;
+
   static getDerivedStateFromProps(props, state) {
     if (EasyProvider.initialized) return null;
     EasyProvider.initialized = true;
@@ -133,6 +134,7 @@ export class EasyProvider extends Component {
 
   static propTypes = {
     children: node,
+    initialState: object,
     log: bool,
     options: shape({
       replacerFn: func,

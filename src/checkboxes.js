@@ -50,8 +50,8 @@ export default function Checkboxes(props) {
 }
 
 Checkboxes.propTypes = {
-  'data-testid': string,
   className: string,
+  'data-testid': string,
   list: arrayOf(
     shape({
       text: string.isRequired,

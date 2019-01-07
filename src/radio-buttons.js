@@ -50,8 +50,8 @@ export default function RadioButtons(props) {
 }
 
 RadioButtons.propTypes = {
-  'data-testid': string,
   className: string,
+  'data-testid': string,
   list: arrayOf(
     shape({
       text: string.isRequired,

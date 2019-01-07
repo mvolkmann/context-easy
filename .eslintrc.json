@@ -33,7 +33,7 @@
 
   "settings": {
     "react": {
-      "version": "16.4"
+      "version": "16.7"
     }
   },
 
@@ -254,7 +254,6 @@
     "prefer-spread": "error",
     "prefer-template": "off",
     "quote-props": ["error", "as-needed"],
-    //"quotes": ["error", "single", "avoid-escape"],
     "quotes": "off",
     "radix": "error",
     "react/display-name": "off",
