@@ -253,6 +253,26 @@ export class EasyProvider extends Component {
       });
     },
 
+    toggle: path => {
+      validatePath('toggle', path);
+      const value = get(path, this.state);
+      const type = typeof value;
+      if (type !== 'boolean') {
+        throw new Error(
+          MSG_PREFIX +
+            'toggle requires a path to a boolean value, but found' +
+            type
+        );
+      }
+      return new Promise(resolve => {
+        this.saveState(
+          set(path, !value, this.state),
+          () => log && log('toggle', this.state, path, 'to', !value)
+        );
+        resolve();
+      });
+    },
+
     transform: (path, fn) => {
       validatePath('transform', path);
       validateFunction('transform', fn);

@@ -129,6 +129,9 @@ The context object currently implements nine methods.
 - `context.set(path, value)`\
   This sets the value at the given path to the given value.
 
+- `context.toggle(path)`\
+  This toggles the boolean value at the given path.
+
 - `context.transform(path, fn)`\
   This sets the value at the given path to
   the value returned by passing the current value

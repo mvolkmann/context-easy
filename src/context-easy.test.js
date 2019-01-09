@@ -10,7 +10,8 @@ describe('context-easy', () => {
     initialState = {
       foo: {
         bar: 2,
-        baz: [1, 2, 3, 4]
+        baz: [1, 2, 3, 4],
+        qux: false
       }
     };
   });
@@ -66,6 +67,10 @@ describe('context-easy', () => {
 
   test('set', () => {
     tester('set', ['foo.bar', 19], 19);
+  });
+
+  test('toggle', () => {
+    tester('toggle', ['foo.qux'], true);
   });
 
   test('transform', () => {
