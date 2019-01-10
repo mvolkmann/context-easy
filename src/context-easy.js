@@ -149,7 +149,7 @@ export class EasyProvider extends Component {
     options: {}
   };
 
-  pendingPromise = Promise.resolve();
+  pendingPromises = [];
 
   state = {
     decrement: (path, delta = 1) => {
@@ -286,11 +286,9 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
+    const waitFor = [...this.pendingPromises];
     const promise = new Promise(async resolve => {
-      console.log('context-easy.js stateState: awaiting pendingPromise');
-      await this.pendingPromise;
-      console.log('context-easy.js stateState: past pendingPromise');
-      this.pendingPromise = promise;
+      await Promise.all(waitFor);
 
       if (!this.throttledSave) {
         this.throttledSave = throttle(() => {
@@ -304,9 +302,10 @@ export class EasyProvider extends Component {
         if (callback) callback();
       });
 
-      console.log('context-easy.js stateState: resolving this promise');
       resolve();
     });
+
+    this.pendingPromises.push(promise);
     return promise;
   };
 
