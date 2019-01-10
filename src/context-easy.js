@@ -144,9 +144,12 @@ export class EasyProvider extends Component {
     }),
     validate: bool
   };
+
   static defaultProps = {
     options: {}
   };
+
+  pendingPromise = Promise.resolve();
 
   state = {
     decrement: (path, delta = 1) => {
@@ -154,24 +157,18 @@ export class EasyProvider extends Component {
       validateNumber('decrement', 'delta', delta);
       const value = get(path, this.state);
       validateNumber('decrement', path, value);
-      return new Promise(resolve => {
-        this.saveState(
-          update(path, n => n - delta, this.state),
-          log && log('decrement', this.state, path, 'by', delta)
-        );
-        resolve();
-      });
+      return this.saveState(
+        update(path, n => n - delta, this.state),
+        () => log && log('decrement', this.state, path, 'by', delta)
+      );
     },
 
     delete: path => {
       validatePath('delete', path);
-      return new Promise(resolve => {
-        this.saveState(
-          omit(path, this.state),
-          () => log && log('delete', this.state, path)
-        );
-        resolve();
-      });
+      return this.saveState(
+        omit(path, this.state),
+        () => log && log('delete', this.state, path)
+      );
     },
 
     filter: (path, fn) => {
@@ -179,13 +176,10 @@ export class EasyProvider extends Component {
       const value = get(path, this.state);
       validateArray('filter', path, value);
       validateFunction('filter', fn);
-      return new Promise(resolve => {
-        this.saveState(
-          update(path, arr => arr.filter(fn)),
-          () => log && log('filter', this.state, path, 'using', fn)
-        );
-        resolve();
-      });
+      return this.saveState(
+        update(path, arr => arr.filter(fn)),
+        () => log && log('filter', this.state, path, 'using', fn)
+      );
     },
 
     get: path => get(path, this.state),
@@ -195,13 +189,10 @@ export class EasyProvider extends Component {
       validateNumber('increment', 'delta', delta);
       const value = get(path, this.state);
       validateNumber('increment', path, value);
-      return new Promise(resolve => {
-        this.saveState(
-          update(path, n => n + delta, this.state),
-          () => log && log('increment', this.state, path, 'by', delta)
-        );
-        resolve();
-      });
+      return this.saveState(
+        update(path, n => n + delta, this.state),
+        () => log && log('increment', this.state, path, 'by', delta)
+      );
     },
 
     // Note that this is a method and is different
@@ -220,37 +211,28 @@ export class EasyProvider extends Component {
       const value = get(path, this.state);
       validateArray('map', path, value);
       validateFunction('map', fn);
-      return new Promise(resolve => {
-        this.saveState(
-          update(path, arr => arr.map(fn)),
-          () => log && log('map', this.state, path, 'using', fn)
-        );
-        resolve();
-      });
+      return this.saveState(
+        update(path, arr => arr.map(fn)),
+        () => log && log('map', this.state, path, 'using', fn)
+      );
     },
 
     push: (path, ...newValues) => {
       validatePath('push', path);
       const value = get(path, this.state);
       validateArray('push', path, value);
-      return new Promise(resolve => {
-        this.saveState(
-          set(path, [...value, ...newValues]),
-          () => log && log('push', this.state, path, 'with', ...newValues)
-        );
-        resolve();
-      });
+      return this.saveState(
+        set(path, [...value, ...newValues]),
+        () => log && log('push', this.state, path, 'with', ...newValues)
+      );
     },
 
     set: (path, value) => {
       validatePath('set', path);
-      return new Promise(resolve => {
-        this.saveState(
-          set(path, value, this.state),
-          () => log && log('set', this.state, path, 'to', value)
-        );
-        resolve();
-      });
+      return this.saveState(
+        set(path, value, this.state), // in lodash
+        () => log && log('set', this.state, path, 'to', value)
+      );
     },
 
     toggle: path => {
@@ -264,25 +246,19 @@ export class EasyProvider extends Component {
             type
         );
       }
-      return new Promise(resolve => {
-        this.saveState(
-          set(path, !value, this.state),
-          () => log && log('toggle', this.state, path, 'to', !value)
-        );
-        resolve();
-      });
+      return this.saveState(
+        set(path, !value, this.state),
+        () => log && log('toggle', this.state, path, 'to', !value)
+      );
     },
 
     transform: (path, fn) => {
       validatePath('transform', path);
       validateFunction('transform', fn);
-      return new Promise(resolve => {
-        this.saveState(
-          update(path, fn, this.state),
-          () => log && log('transform', this.state, path, 'using', fn)
-        );
-        resolve();
-      });
+      return this.saveState(
+        update(path, fn, this.state),
+        () => log && log('transform', this.state, path, 'using', fn)
+      );
     }
   };
 
@@ -310,17 +286,28 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
-    if (!this.throttledSave) {
-      this.throttledSave = throttle(() => {
-        const json = JSON.stringify(replacerFn(this.state));
-        sessionStorage.setItem(STATE_KEY, json);
-      }, 1000);
-    }
+    const promise = new Promise(async resolve => {
+      console.log('context-easy.js stateState: awaiting pendingPromise');
+      await this.pendingPromise;
+      console.log('context-easy.js stateState: past pendingPromise');
+      this.pendingPromise = promise;
 
-    this.setState(stateOrFn, () => {
-      if (persist) this.throttledSave();
-      if (callback) callback();
+      if (!this.throttledSave) {
+        this.throttledSave = throttle(() => {
+          const json = JSON.stringify(replacerFn(this.state));
+          sessionStorage.setItem(STATE_KEY, json);
+        }, 1000);
+      }
+
+      this.setState(stateOrFn, () => {
+        if (persist) this.throttledSave();
+        if (callback) callback();
+      });
+
+      console.log('context-easy.js stateState: resolving this promise');
+      resolve();
     });
+    return promise;
   };
 
   render() {

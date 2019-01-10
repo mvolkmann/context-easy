@@ -37,8 +37,12 @@ describe('context-easy', () => {
 
     const button = getByText('Click');
     fireEvent.click(button);
-    const [path] = methodArgs;
-    expect(get(path, context)).toEqual(expectedValue);
+
+    // Wait a bit for the state change to complete.
+    setTimeout(() => {
+      const [path] = methodArgs;
+      expect(get(path, context)).toEqual(expectedValue);
+    }, 100);
   }
 
   test('decrement', () => {
@@ -51,6 +55,10 @@ describe('context-easy', () => {
 
   test('filter', () => {
     tester('filter', ['foo.baz', n => n % 2 === 0], [2, 4]);
+  });
+
+  test('get', () => {
+    tester('get', ['foo.bar'], 2);
   });
 
   test('increment', () => {
