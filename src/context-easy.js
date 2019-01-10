@@ -149,7 +149,7 @@ export class EasyProvider extends Component {
     options: {}
   };
 
-  pendingPromises = [];
+  previousPromise = null;
 
   state = {
     decrement: (path, delta = 1) => {
@@ -286,15 +286,10 @@ export class EasyProvider extends Component {
   }
 
   saveState = (stateOrFn, callback) => {
-    // Clone the array of pending promises so we can wait for
-    // all but the promise being created here to resolve.
-    const waitFor = [...this.pendingPromises]; // clones the array
+    const waitFor = this.previousPromise;
 
-    const promise = new Promise(async resolve => {
-      await Promise.all(waitFor);
-
-      // Remove all the promises that have been resolved.
-      this.pendingPromises = this.pendingPromises.filter(pp => !pp.resolved);
+    this.previousPromise = new Promise(async resolve => {
+      await waitFor;
 
       if (!this.throttledSave) {
         this.throttledSave = throttle(() => {
@@ -308,12 +303,10 @@ export class EasyProvider extends Component {
         if (callback) callback();
       });
 
-      promise.resolved = true;
       resolve();
     });
 
-    this.pendingPromises.push(promise);
-    return promise;
+    return this.previousPromise;
   };
 
   render() {
