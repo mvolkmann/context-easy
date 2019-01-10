@@ -21,7 +21,9 @@ The Provider implemented by context-easy
 does exactly this.
 
 The easiest way for components to use this
-is through the `useContext` hook added in React 16.7.
+is through the `useContext` hook added in React 16.7.0-alpha.0.
+Note that hooks are not finalized yet, but the React team
+plans to add them in a production release by April 2019.
 If you are not yet familiar with React hooks,
 read about them at
 <https://raw.githubusercontent.com/mvolkmann/context-easy/master/hooks.md>.
