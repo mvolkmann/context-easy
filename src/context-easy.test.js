@@ -91,9 +91,10 @@ describe('context-easy', () => {
 
     function TestComponent() {
       context = useContext(EasyContext);
-      async function doIt() {
-        await context.increment('foo.bar');
-        await context.filter('foo.baz', n => n > 2);
+      function doIt() {
+        context.increment('foo.bar');
+        context.transform('foo.bar', n => n * 2);
+        context.filter('foo.baz', n => n > 2);
       }
       return <button onClick={doIt}>Click</button>;
     }
@@ -109,7 +110,7 @@ describe('context-easy', () => {
     const button = getByText('Click');
     fireEvent.click(button);
     setTimeout(() => {
-      expect(get('foo.bar', context)).toBe(3);
+      expect(get('foo.bar', context)).toBe(6);
       expect(get('foo.baz', context)).toEqual([3, 4]);
       done();
     });
@@ -120,9 +121,9 @@ describe('context-easy', () => {
 
     function TestComponent() {
       context = useContext(EasyContext);
-      async function doIt() {
-        await context.increment('foo.bar');
-        await context.filter('foo.baz', n => n > 2);
+      function doIt() {
+        context.increment('foo.bar');
+        context.filter('foo.baz', n => n > 2);
       }
       return <button onClick={doIt}>Click</button>;
     }

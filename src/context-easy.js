@@ -158,7 +158,9 @@ export class EasyProvider extends Component {
       const value = get(path, this.state);
       validateNumber('decrement', path, value);
       return this.saveState(
-        update(path, n => n - delta, this.state),
+        'update',
+        path,
+        n => n - delta,
         () => log && log('decrement', this.state, path, 'by', delta)
       );
     },
@@ -166,18 +168,21 @@ export class EasyProvider extends Component {
     delete: path => {
       validatePath('delete', path);
       return this.saveState(
-        omit(path, this.state),
+        'omit',
+        path,
+        null,
         () => log && log('delete', this.state, path)
       );
     },
 
     filter: (path, fn) => {
       validatePath('filter', path);
-      const value = get(path, this.state);
-      validateArray('filter', path, value);
+      validateArray('filter', path, get(path, this.state));
       validateFunction('filter', fn);
       return this.saveState(
-        update(path, arr => arr.filter(fn)),
+        'update',
+        path,
+        arr => arr.filter(fn),
         () => log && log('filter', this.state, path, 'using', fn)
       );
     },
@@ -190,7 +195,9 @@ export class EasyProvider extends Component {
       const value = get(path, this.state);
       validateNumber('increment', path, value);
       return this.saveState(
-        update(path, n => n + delta, this.state),
+        'update',
+        path,
+        n => n + delta,
         () => log && log('increment', this.state, path, 'by', delta)
       );
     },
@@ -208,21 +215,23 @@ export class EasyProvider extends Component {
 
     map: (path, fn) => {
       validatePath('map', path);
-      const value = get(path, this.state);
-      validateArray('map', path, value);
+      validateArray('map', path, get(path, this.state));
       validateFunction('map', fn);
       return this.saveState(
-        update(path, arr => arr.map(fn)),
+        'update',
+        path,
+        arr => arr.map(fn),
         () => log && log('map', this.state, path, 'using', fn)
       );
     },
 
     push: (path, ...newValues) => {
       validatePath('push', path);
-      const value = get(path, this.state);
-      validateArray('push', path, value);
+      validateArray('push', path, get(path, this.state));
       return this.saveState(
-        set(path, [...value, ...newValues]),
+        'push',
+        path,
+        newValues,
         () => log && log('push', this.state, path, 'with', ...newValues)
       );
     },
@@ -230,7 +239,9 @@ export class EasyProvider extends Component {
     set: (path, value) => {
       validatePath('set', path);
       return this.saveState(
-        set(path, value, this.state), // in lodash
+        'set',
+        path,
+        value,
         () => log && log('set', this.state, path, 'to', value)
       );
     },
@@ -247,7 +258,8 @@ export class EasyProvider extends Component {
         );
       }
       return this.saveState(
-        set(path, !value, this.state),
+        'toggle',
+        path,
         () => log && log('toggle', this.state, path, 'to', !value)
       );
     },
@@ -256,7 +268,9 @@ export class EasyProvider extends Component {
       validatePath('transform', path);
       validateFunction('transform', fn);
       return this.saveState(
-        update(path, fn, this.state),
+        'update',
+        path,
+        fn,
         () => log && log('transform', this.state, path, 'using', fn)
       );
     }
@@ -285,12 +299,14 @@ export class EasyProvider extends Component {
     this.setState(loadState());
   }
 
-  saveState = (stateOrFn, callback) => {
+  saveState = (operation, path, value, callback) => {
     const waitFor = this.previousPromise;
 
     this.previousPromise = new Promise(async resolve => {
-      await waitFor;
+      await waitFor; // pending operation to complete
 
+      // Define this function once.
+      //TODO: Is it necessary to set this inside saveState?
       if (!this.throttledSave) {
         this.throttledSave = throttle(() => {
           const json = JSON.stringify(replacerFn(this.state));
@@ -298,12 +314,36 @@ export class EasyProvider extends Component {
         }, 1000);
       }
 
-      this.setState(stateOrFn, () => {
+      let newState;
+      switch (operation) {
+        case 'omit':
+          newState = omit(path, this.state);
+          break;
+        case 'push': {
+          const currentValue = get(path, this.state);
+          newState = set(path, [...currentValue, ...value], this.state);
+          break;
+        }
+        case 'set':
+          newState = set(path, value, this.state);
+          break;
+        case 'toggle': {
+          const currentValue = get(path, this.state);
+          newState = set(path, !currentValue, this.state);
+          break;
+        }
+        case 'update':
+          newState = update(path, value, this.state);
+          break;
+        default:
+          throw new Error('unhandled operation ' + operation);
+      }
+
+      this.setState(newState, () => {
         if (persist) this.throttledSave();
         if (callback) callback();
+        resolve();
       });
-
-      resolve();
     });
 
     return this.previousPromise;
