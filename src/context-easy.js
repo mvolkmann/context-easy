@@ -157,7 +157,7 @@ export class EasyProvider extends Component {
       validateNumber('decrement', 'delta', delta);
       const value = get(path, this.state);
       validateNumber('decrement', path, value);
-      return this.saveState(
+      return this.performOperation(
         'update',
         path,
         n => n - delta,
@@ -167,7 +167,7 @@ export class EasyProvider extends Component {
 
     delete: path => {
       validatePath('delete', path);
-      return this.saveState(
+      return this.performOperation(
         'omit',
         path,
         null,
@@ -179,7 +179,7 @@ export class EasyProvider extends Component {
       validatePath('filter', path);
       validateArray('filter', path, get(path, this.state));
       validateFunction('filter', fn);
-      return this.saveState(
+      return this.performOperation(
         'update',
         path,
         arr => arr.filter(fn),
@@ -194,7 +194,7 @@ export class EasyProvider extends Component {
       validateNumber('increment', 'delta', delta);
       const value = get(path, this.state);
       validateNumber('increment', path, value);
-      return this.saveState(
+      return this.performOperation(
         'update',
         path,
         n => n + delta,
@@ -217,7 +217,7 @@ export class EasyProvider extends Component {
       validatePath('map', path);
       validateArray('map', path, get(path, this.state));
       validateFunction('map', fn);
-      return this.saveState(
+      return this.performOperation(
         'update',
         path,
         arr => arr.map(fn),
@@ -228,7 +228,7 @@ export class EasyProvider extends Component {
     push: (path, ...newValues) => {
       validatePath('push', path);
       validateArray('push', path, get(path, this.state));
-      return this.saveState(
+      return this.performOperation(
         'push',
         path,
         newValues,
@@ -238,7 +238,7 @@ export class EasyProvider extends Component {
 
     set: (path, value) => {
       validatePath('set', path);
-      return this.saveState(
+      return this.performOperation(
         'set',
         path,
         value,
@@ -257,7 +257,7 @@ export class EasyProvider extends Component {
             type
         );
       }
-      return this.saveState(
+      return this.performOperation(
         'toggle',
         path,
         () => log && log('toggle', this.state, path, 'to', !value)
@@ -267,7 +267,7 @@ export class EasyProvider extends Component {
     transform: (path, fn) => {
       validatePath('transform', path);
       validateFunction('transform', fn);
-      return this.saveState(
+      return this.performOperation(
         'update',
         path,
         fn,
@@ -299,20 +299,11 @@ export class EasyProvider extends Component {
     this.setState(loadState());
   }
 
-  saveState = (operation, path, value, callback) => {
+  performOperation(operation, path, value, callback) {
     const waitFor = this.previousPromise;
 
     this.previousPromise = new Promise(async resolve => {
       await waitFor; // pending operation to complete
-
-      // Define this function once.
-      //TODO: Is it necessary to set this inside saveState?
-      if (!this.throttledSave) {
-        this.throttledSave = throttle(() => {
-          const json = JSON.stringify(replacerFn(this.state));
-          sessionStorage.setItem(STATE_KEY, json);
-        }, 1000);
-      }
 
       let newState;
       switch (operation) {
@@ -347,7 +338,12 @@ export class EasyProvider extends Component {
     });
 
     return this.previousPromise;
-  };
+  }
+
+  throttledSave = throttle(() => {
+    const json = JSON.stringify(replacerFn(this.state));
+    sessionStorage.setItem(STATE_KEY, json);
+  }, 1000);
 
   render() {
     return (
