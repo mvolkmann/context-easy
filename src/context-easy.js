@@ -137,9 +137,9 @@ export class EasyProvider extends Component {
     initialState: object,
     log: bool,
     options: shape({
+      persist: bool,
       replacerFn: func,
       reviverFn: func,
-      persist: bool,
       version: string
     }),
     validate: bool

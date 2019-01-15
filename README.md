@@ -63,7 +63,7 @@ export default function App() {
 
 In function components that need to access and/or modify this state:
 
-1. Import the `useCallback` hook and `EasyContext`.
+1. Import the `useContext` hook and `EasyContext`.
 
 ```js
 import React, {useContext} from 'react';
@@ -89,7 +89,7 @@ context.person.name;
 
 ## Context Object Methods
 
-The context object currently implements nine methods.
+The context object currently implements ten methods.
 
 - `context.decrement(path)`\
   This decrements the number at the given path.
@@ -100,7 +100,8 @@ The context object currently implements nine methods.
   This deletes the property at the given path.
 
 - `context.filter(path, fn)`\
-  This filters the array at the given path.
+  This replaces the array at the given path with a new array
+  that is the result of filtering the current elements.
   The function provided as the second argument
   is called on each array element.
   It should return true for elements to be retained
@@ -145,7 +146,7 @@ The `useContext` hook subscribes components that call it
 to context state updates.
 This means that components will be re-rendered
 on every context state change.
-To only re-render components will specific context state properties are changed,
+To only re-render components when specific context state properties are changed,
 wrap the component JSX is a call to the `useCallback` hook.
 
 For example, suppose a component only depends on
@@ -155,28 +156,37 @@ will make it so the component is only re-rendered
 when those context state properties change.
 
 ```js
+import React, {useCallback, useContext} from 'react';
+...
 const context = useContext(EasyContext);
 const {count, person} = context;
 const {name} = person;
-return useCallback(<div>component JSX goes here.</div>, [count, name]);
+return useCallback(
+  <div>
+    component JSX goes here
+   </div>,
+   [count, name]
+);
 ```
 
 ## Options
 
-The `EasyProvider` component accepts an `options` prop
-whose value is an object that specifies the desired options.
+The `EasyProvider` component accepts props that specify options.
 
 To log all state changes in the devtools console,
-set the `log` option to `true`.
+include the `log` prop with no value.
 
 To validate all method calls made on the context object
 and throw an error when they are called incorrectly,
-set the `validate` option to `true`.
+include the `validate` prop with no value.
 
 These are useful in development,
 but typically should not be used in production.
 If the `NODE_ENV` environment variable is set to "production",
 the `log` and `validate` options are ignored.
+
+Other options are specified in the `options` prop
+whose value is an object that specifies their values.
 
 The `persist` option
 is described in the "SessionStorage" section below.
@@ -191,19 +201,23 @@ are described in the "Sensitive Data" section below.
 
 When the layout of the state changes, it is necessary
 to change state paths throughout the code.
-For small apps or apps that use a small number of state paths
+For apps that use a small number of state paths
 this is likely not a concern.
-For large apps, consider creating a source file that exports
-constants for the state paths (perhaps named `path-constants.js`)
-and use those when calling every context-easy function that requires a path.
+For apps that use a large number of state paths,
+consider creating a source file that exports
+constants for the state paths (perhaps named `path-constants.js`) and
+use those when calling every context-easy function that requires a path.
 
 For example,
 
 ```js
+// In path-constants.js ...
 const GAME_HIGH_SCORE = 'game.statistics.highScore';
 const USER_CITY = 'user.address.city';
-...
+
+// In the source file for a component ...
 import {GAME_HIGH_SCORE, USER_CITY} from './path-constants';
+...
 context.set(USER_CITY, 'St. Louis');
 context.transform(GAME_HIGH_SCORE, score => score + 1);
 ```
@@ -215,7 +229,7 @@ it is only necessary to update these constants.
 
 It is common to have `input`, `select`, and `textarea` elements
 with `onChange` handlers that get their value from `event.target.value`
-and dispatch an action where the value is the payload.
+and update a specific state path.
 An alternative is to use the provided `Input`, `Select`, and `TextArea` components
 as follows:
 
@@ -229,12 +243,12 @@ For example,
 The `type` property defaults to `'text'`,
 but can be set to any valid value including `'checkbox'`.
 
-The value used by the `input` is the state value at the specified path.
+The value used by the `Input` is the state value at the specified path.
 When the user changes the value, this component
 updates the value at that path in the state.
 
 To perform additional processing of changes such as validation,
-supply an `onChange` prop that refers to a function.
+supply an `onChange` prop whose value is a function.
 
 HTML `textarea` elements can be replaced by the `TextArea` component.
 For example,
@@ -247,24 +261,28 @@ HTML `select` elements can be replaced by the `Select` component.
 For example,
 
 ```js
-<Select path="user.favoriteColor">
+<Select path="favorite.color">
   <option>red</option>
   <option>green</option>
   <option>blue</option>
 </Select>
 ```
 
-If the `option` elements have a value attribute, that value
+If the `option` elements have a `value` attribute, that value
 will be used instead of the text inside the `option`.
 
 For a set of radio buttons, use the `RadioButtons` component.
 For example,
 
 ```js
-<RadioButtons className="flavor" list={radioButtonList} path="favoriteFlavor" />
+<RadioButtons
+  className="flavor"
+  list={radioButtonList}
+  path="favorite.flavor"
+/>
 ```
 
-where radioButtonList is set as follows:
+where `radioButtonList` is set as follows:
 
 ```js
 const radioButtonList = [
@@ -274,7 +292,7 @@ const radioButtonList = [
 ];
 ```
 
-When a radio button is clicked the state property `favoriteFlavor`
+When a radio button is clicked, the state property `favorite.flavor`
 will be set the value of that radio button.
 
 For a set of checkboxes, use the `Checkboxes` component.
@@ -298,7 +316,8 @@ When a checkbox is clicked the boolean value at the corresponding path
 will be toggled between false and true.
 
 All of these components take a `path` prop
-which is used to update the value of the component.
+which is used to get the current value of the component
+and update the value at that path.
 
 ## SessionStorage
 
@@ -308,7 +327,7 @@ context state as a JSON string on every state change.
 This is throttled so `sessionStorage` is
 not updated more frequently than once per second.
 The state in `sessionStorage` is automatically reloaded
-into the context state if the browser is refreshed.
+into the context state when the browser is refreshed.
 
 To opt out of this behavior, pass an options object to
 `EasyProvider` as follows:
@@ -332,7 +351,7 @@ desirable to replace what is in `sessionStorage` with the new initial state.
 
 One way do to this is to close the browser tab and open a new one.
 If this isn't done, the application may not work properly because it
-is expecting different data than what will be used from `sessionStorage`.
+will expect different data than what is in `sessionStorage`.
 
 A way to force the new initial state to be used is to supply a
 version string or number in the options object passed to `EasyProvider`.
