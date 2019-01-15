@@ -250,7 +250,7 @@ export class EasyProvider extends Component {
       validatePath('toggle', path);
       const value = get(path, this.state);
       const type = typeof value;
-      if (type !== 'boolean') {
+      if (type !== 'boolean' && type !== 'undefined') {
         throw new Error(
           MSG_PREFIX +
             'toggle requires a path to a boolean value, but found' +
