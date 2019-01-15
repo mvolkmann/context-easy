@@ -79,6 +79,7 @@ describe('context-easy', () => {
 
   test('toggle', () => {
     tester('toggle', ['foo.qux'], true);
+    tester('toggle', ['not.found'], true);
   });
 
   test('transform', () => {
