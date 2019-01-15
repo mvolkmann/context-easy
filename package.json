@@ -7,7 +7,7 @@
     "context",
     "hooks"
   ],
-  "version": "0.9.10",
+  "version": "0.9.11",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
