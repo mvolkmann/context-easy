@@ -1,6 +1,7 @@
 # context-easy
 
-This is a module for React that implements a Context API Provider.
+This provides the easiest way to manage state in a React application.
+It implements a Context API Provider.
 This Provider can manage all the state for a React application
 and is highly generic, making it suitable for any application.
 

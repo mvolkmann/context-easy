@@ -1,13 +1,13 @@
 {
   "name": "context-easy",
-  "description": "The easiest way to manage state in an React application!",
+  "description": "The easiest way to manage state in a React application!",
   "keywords": [
     "React",
     "state",
     "context",
     "hooks"
   ],
-  "version": "0.9.7",
+  "version": "0.9.8",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
