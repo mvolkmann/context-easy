@@ -69,9 +69,7 @@ export function loadState() {
   }
 }
 
-const noOp = () => {};
-
-let validateArray = (methodName, path, value) => {
+const validateArray = (methodName, path, value) => {
   if (Array.isArray(value)) return;
   throw new Error(
     MSG_PREFIX +
@@ -83,14 +81,14 @@ let validateArray = (methodName, path, value) => {
   );
 };
 
-let validateFunction = (methodName, value) => {
+const validateFunction = (methodName, value) => {
   if (typeof value === 'function') return;
   throw new Error(
     MSG_PREFIX + methodName + ' requires a function, but got ' + value
   );
 };
 
-let validateNumber = (methodName, path, value) => {
+const validateNumber = (methodName, path, value) => {
   if (typeof value === 'number') return;
   throw new Error(
     MSG_PREFIX +
@@ -102,7 +100,7 @@ let validateNumber = (methodName, path, value) => {
   );
 };
 
-let validatePath = (methodName, path) => {
+const validatePath = (methodName, path) => {
   if (typeof path === 'string') return;
   throw new Error(
     MSG_PREFIX + methodName + ' requires a string path, but got ' + path
@@ -153,10 +151,12 @@ export class EasyProvider extends Component {
 
   state = {
     decrement: (path, delta = 1) => {
-      validatePath('decrement', path);
-      validateNumber('decrement', 'delta', delta);
-      const value = get(path, this.state);
-      validateNumber('decrement', path, value);
+      if (this.shouldValidate) {
+        validatePath('decrement', path);
+        validateNumber('decrement', 'delta', delta);
+        const value = get(path, this.state);
+        validateNumber('decrement', path, value);
+      }
       return this.performOperation(
         'update',
         path,
@@ -166,7 +166,7 @@ export class EasyProvider extends Component {
     },
 
     delete: path => {
-      validatePath('delete', path);
+      if (this.shouldValidate) validatePath('delete', path);
       return this.performOperation(
         'omit',
         path,
@@ -176,9 +176,11 @@ export class EasyProvider extends Component {
     },
 
     filter: (path, fn) => {
-      validatePath('filter', path);
-      validateArray('filter', path, get(path, this.state));
-      validateFunction('filter', fn);
+      if (this.shouldValidate) {
+        validatePath('filter', path);
+        validateArray('filter', path, get(path, this.state));
+        validateFunction('filter', fn);
+      }
       return this.performOperation(
         'update',
         path,
@@ -190,10 +192,12 @@ export class EasyProvider extends Component {
     get: path => get(path, this.state),
 
     increment: (path, delta = 1) => {
-      validatePath('increment', path);
-      validateNumber('increment', 'delta', delta);
-      const value = get(path, this.state);
-      validateNumber('increment', path, value);
+      if (this.shouldValidate) {
+        validatePath('increment', path);
+        validateNumber('increment', 'delta', delta);
+        const value = get(path, this.state);
+        validateNumber('increment', path, value);
+      }
       return this.performOperation(
         'update',
         path,
@@ -214,9 +218,11 @@ export class EasyProvider extends Component {
     },
 
     map: (path, fn) => {
-      validatePath('map', path);
-      validateArray('map', path, get(path, this.state));
-      validateFunction('map', fn);
+      if (this.shouldValidate) {
+        validatePath('map', path);
+        validateArray('map', path, get(path, this.state));
+        validateFunction('map', fn);
+      }
       return this.performOperation(
         'update',
         path,
@@ -226,8 +232,10 @@ export class EasyProvider extends Component {
     },
 
     push: (path, ...newValues) => {
-      validatePath('push', path);
-      validateArray('push', path, get(path, this.state));
+      if (this.shouldValidate) {
+        validatePath('push', path);
+        validateArray('push', path, get(path, this.state));
+      }
       return this.performOperation(
         'push',
         path,
@@ -237,7 +245,7 @@ export class EasyProvider extends Component {
     },
 
     set: (path, value) => {
-      validatePath('set', path);
+      if (this.shouldValidate) validatePath('set', path);
       return this.performOperation(
         'set',
         path,
@@ -247,26 +255,28 @@ export class EasyProvider extends Component {
     },
 
     toggle: path => {
-      validatePath('toggle', path);
       const value = get(path, this.state);
-      const type = typeof value;
-      if (type !== 'boolean' && type !== 'undefined') {
-        throw new Error(
-          MSG_PREFIX +
-            'toggle requires a path to a boolean value, but found' +
-            type
-        );
+      if (this.shouldValidate) {
+        validatePath('toggle', path);
+        const type = typeof value;
+        if (type !== 'boolean' && type !== 'undefined') {
+          throw new Error(
+            MSG_PREFIX +
+              'toggle requires a path to a boolean value, but found' +
+              type
+          );
+        }
       }
-      return this.performOperation(
-        'toggle',
-        path,
-        () => log && log('toggle', this.state, path, 'to', !value)
+      return this.performOperation('toggle', path, () =>
+        log('toggle', this.state, path, 'to', !value)
       );
     },
 
     transform: (path, fn) => {
-      validatePath('transform', path);
-      validateFunction('transform', fn);
+      if (this.shouldValidate) {
+        validatePath('transform', path);
+        validateFunction('transform', fn);
+      }
       return this.performOperation(
         'update',
         path,
@@ -278,15 +288,8 @@ export class EasyProvider extends Component {
 
   componentDidMount() {
     const {log: shouldLog, options, validate} = this.props;
-
-    if (!shouldLog || isProd) log = noOp;
-
-    if (!validate || isProd) {
-      validateArray = noOp;
-      validateFunction = noOp;
-      validateNumber = noOp;
-      validatePath = noOp;
-    }
+    if (!shouldLog || isProd) log = () => {}; // noop
+    this.shouldValidate = validate && !isProd;
 
     ({
       initialState = {},
