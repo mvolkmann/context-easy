@@ -7,7 +7,7 @@
     "context",
     "hooks"
   ],
-  "version": "0.10.0",
+  "version": "0.10.1",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -34,8 +34,8 @@
   ],
   "dependencies": {
     "lodash": "^4.17.11",
-    "react": "16.8.0-alpha.0",
-    "react-dom": "16.8.0-alpha.0"
+    "react": "16.8.1",
+    "react-dom": "16.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
