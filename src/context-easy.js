@@ -124,7 +124,7 @@ const validatePath = (methodName, path) => {
 export class EasyProvider extends Component {
   static initialized = false;
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props) {
     if (EasyProvider.initialized) return null;
     EasyProvider.initialized = true;
     return props.initialState;
