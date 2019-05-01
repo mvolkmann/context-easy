@@ -122,7 +122,7 @@ The context object currently implements ten methods.
 - `context.map(path, fn)`\
   This replaces the array at the given path with a new array.
   The function provided as the second argument
-  is called on each array element.
+  is passed each array element one at a time.
   The new array will contain the return values of each of these calls.
 
 - `context.push(path, newValue1, newValue2, ...)`\
@@ -158,16 +158,18 @@ when those context state properties change.
 
 ```js
 import React, {useCallback, useContext} from 'react';
-...
-const context = useContext(EasyContext);
-const {count, person} = context;
-const {name} = person;
-return useCallback(
-  <div>
-    component JSX goes here
-   </div>,
-   [count, name]
-);
+
+export default SomeComponent() {
+  const context = useContext(EasyContext);
+  const {count, person} = context;
+  const {name} = person;
+  return useCallback(
+    <div>
+      ...component JSX goes here...
+    </div>,
+    [count, name]
+  );
+}
 ```
 
 ## Options
@@ -207,9 +209,9 @@ this is likely not a concern.
 For apps that use a large number of state paths,
 consider creating a source file that exports
 constants for the state paths (perhaps named `path-constants.js`) and
-use those when calling every context-easy function that requires a path.
+use those when calling `context` methods that require a path.
 
-For example,
+For example:
 
 ```js
 // In path-constants.js ...
@@ -231,11 +233,12 @@ it is only necessary to update these constants.
 It is common to have `input`, `select`, and `textarea` elements
 with `onChange` handlers that get their value from `event.target.value`
 and update a specific state path.
-An alternative is to use the provided `Input`, `Select`, and `TextArea` components
-as follows:
+An alternative is to use the provided
+`Input`, `Select`, and `TextArea`, `RadioButtons`, and `Checkboxes`
+components as follows:
 
 HTML `input` elements can be replaced by the `Input` component.
-For example,
+For example:
 
 ```js
 <Input path="user.firstName" />
@@ -252,14 +255,14 @@ To perform additional processing of changes such as validation,
 supply an `onChange` prop whose value is a function.
 
 HTML `textarea` elements can be replaced by the `TextArea` component.
-For example,
+For example:
 
 ```js
 <TextArea path="feedback.comment" />
 ```
 
 HTML `select` elements can be replaced by the `Select` component.
-For example,
+For example:
 
 ```js
 <Select path="favorite.color">
@@ -273,7 +276,7 @@ If the `option` elements have a `value` attribute, that value
 will be used instead of the text inside the `option`.
 
 For a set of radio buttons, use the `RadioButtons` component.
-For example,
+For example:
 
 ```js
 <RadioButtons
@@ -294,10 +297,10 @@ const radioButtonList = [
 ```
 
 When a radio button is clicked, the state property `favorite.flavor`
-will be set the value of that radio button.
+will be set to the value of that radio button.
 
 For a set of checkboxes, use the `Checkboxes` component.
-For example,
+For example:
 
 ```js
 <Checkboxes className="colors" list={checkboxList} />
@@ -313,7 +316,7 @@ const checkboxList = [
 ];
 ```
 
-When a checkbox is clicked the boolean value at the corresponding path
+When a checkbox is clicked, the boolean value at the corresponding path
 will be toggled between false and true.
 
 All of these components take a `path` prop
@@ -337,7 +340,7 @@ To opt out of this behavior, pass an options object to
 const options = {persist: false}; // defaults to true
 ...
 return (
-  <EasyProvider initialState={initialState} options={options} validate>
+  <EasyProvider initialState={initialState} options={options}>
     ...
   </EasyProvider>
 )
@@ -345,8 +348,6 @@ return (
 
 ## Versions
 
-By default context-easy saves context state data in `sessionStorage`
-so it can be retrieved if the user refreshes the browser.
 During development when the shape of the initial state changes, it is
 desirable to replace what is in `sessionStorage` with the new initial state.
 
@@ -355,19 +356,19 @@ If this isn't done, the application may not work properly because it
 will expect different data than what is in `sessionStorage`.
 
 A way to force the new initial state to be used is to supply a
-version string or number in the options object passed to `EasyProvider`.
-Whenever context-easy sees a new version,
-it replaces the data in `sessionStorage` with the current
-`initialState` value in the options object passed to `EasyProvider`.
+version property in the options object passed to `EasyProvider`.
+When context-easy sees a new version,
+it replaces the data in `sessionStorage` with
+the `initialState` value passed to `EasyProvider`.
 
 ## Sensitive Data
 
 When the context state contains sensitive data
 such as passwords and credit card numbers,
 it is a good idea to prevent that data from being
-added to the context state or written to `sessionStorage`.
+written to `sessionStorage`.
 
-One way to do this is to add `replacerFn` and `reviverFn` functions
+To do this, add `replacerFn` and `reviverFn` functions
 to the options object that is passed to `EasyProvider`.
 These functions are similar to the optional `replacer` and `reviver` parameters
 used by `JSON.stringify` and `JSON.parse`.
@@ -377,6 +378,25 @@ including deleting, modifying, and adding properties,
 they should make a copy of the state object,
 modify the copy, and return it.
 Consider using the lodash function `deepClone` to create the copy.
+
+## Browser Devtools
+
+A nice feature of Redux is the ability to use redux-devtools.
+It supports viewing all the actions that have been dispatched
+and the state after each action has been processed.
+
+It also supports "time travel debugging" which
+shows the state of the UI after a selected action.
+In truth I rarely use time travel debugging.
+
+The `log` feature of context-easy outputs a
+description of each context method call
+and the state after the call.
+This is somewhat of a replacement for what redux-devtools provides.
+
+react-devtools displays the data in a context
+when its `Provider` element is selected.
+It is updated dynamically when context data changes.
 
 ## Example app
 

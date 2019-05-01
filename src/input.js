@@ -46,6 +46,7 @@ export default function Input(props) {
 
 Input.propTypes = {
   autoFocus: bool,
+  className: string,
   max: number,
   min: number,
   onChange: func, // called on every change to value

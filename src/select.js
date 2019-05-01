@@ -30,6 +30,7 @@ export default function Select(props) {
 
 Select.propTypes = {
   children: node,
+  className: string,
   onChange: func,
   path: string
 };

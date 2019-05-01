@@ -20,6 +20,7 @@ export default function TextArea(props) {
 }
 
 TextArea.propTypes = {
+  className: string,
   onChange: func,
   path: string
 };
