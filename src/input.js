@@ -4,7 +4,7 @@ import React, {useCallback, useContext} from 'react';
 import {EasyContext} from './context-easy';
 
 export default function Input(props) {
-  const {autoFocus, onChange, onEnter, path, type} = props;
+  const {autoFocus, onChange, onEnter, onInput, path, type} = props;
   const context = useContext(EasyContext);
 
   const handleChange = useCallback(event => {
@@ -41,6 +41,14 @@ export default function Input(props) {
     delete inputProps.onEnter;
   }
 
+  if (type === 'range') {
+    const customOnInput = onInput;
+    inputProps.onInput = event => {
+      if (path) context.set(path, Number(event.target.value));
+      if (customOnInput) customOnInput(event);
+    };
+  }
+
   return <input {...inputProps} onChange={handleChange} />;
 }
 
@@ -49,8 +57,9 @@ Input.propTypes = {
   className: string,
   max: number,
   min: number,
-  onChange: func, // called on every change to value
+  onChange: func, // called final changes to value
   onEnter: func, // called if user presses enter key
+  onInput: func, // called on every change to value
   path: string, // state path that is updated
   type: string // type of the HTML input
 };
