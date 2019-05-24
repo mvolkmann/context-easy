@@ -52,7 +52,7 @@ To use context-easy:
    };
    ```
 
-This could also be imported from a file named `initial-state.js`.
+   This could also be imported from a file named `initial-state.js`.
 
 4. Change the call to `render` to use `EasyProvider` to wrap the top component, typically `App`.
 
