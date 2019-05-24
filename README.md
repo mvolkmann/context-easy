@@ -31,13 +31,15 @@ or watch the video at
 
 To use context-easy:
 
-1. Import `EasyProvider`.
+1. Modify `src/index.js`.
+
+2. Import `EasyProvider`.
 
 ```js
 import {EasyProvider} from 'context-easy';
 ```
 
-2. Define the initial state. For example:
+3. Define the initial state. For example:
 
 ```js
 const initialState = {
@@ -50,16 +52,17 @@ const initialState = {
 };
 ```
 
-3. Wrap the top-most application component in `EasyProvider`.
+This could also be imported from a file named `initial-state.js`.
+
+4. Change the call to `render` to use `EasyProvider` to wrap the top component, typically `App`.
 
 ```js
-export default function App() {
-  return (
-    <EasyProvider initialState={initialState} log validate>
-      {/* top-most components go here */}
-    </EasyProvider>
-  );
-}
+const jsx = (
+  <EasyProvider initialState={initialState} log validate>
+    <App />
+  </EasyProvider>
+);
+ReactDOM.render(jsx, document.getElementById('root'));
 ```
 
 In function components that need to access and/or modify this state:
