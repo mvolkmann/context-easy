@@ -1,6 +1,6 @@
 {
   "name": "context-easy",
-  "version": "0.10.8",
+  "version": "0.10.9",
   "description": "The easiest way to manage state in a React application!",
   "keywords": [
     "React",

@@ -35,56 +35,56 @@ To use context-easy:
 
 2. Import `EasyProvider`.
 
-```js
-import {EasyProvider} from 'context-easy';
-```
+   ```js
+   import {EasyProvider} from 'context-easy';
+   ```
 
 3. Define the initial state. For example:
 
-```js
-const initialState = {
-  count: 0,
-  person: {
-    name: 'Mark',
-    occupation: 'software developer'
-  },
-  size: 'medium'
-};
-```
+   ```js
+   const initialState = {
+     count: 0,
+     person: {
+       name: 'Mark',
+       occupation: 'software developer'
+     },
+     size: 'medium'
+   };
+   ```
 
 This could also be imported from a file named `initial-state.js`.
 
 4. Change the call to `render` to use `EasyProvider` to wrap the top component, typically `App`.
 
-```js
-const jsx = (
-  <EasyProvider initialState={initialState} log validate>
-    <App />
-  </EasyProvider>
-);
-ReactDOM.render(jsx, document.getElementById('root'));
-```
+   ```js
+   const jsx = (
+     <EasyProvider initialState={initialState} log validate>
+       <App />
+     </EasyProvider>
+   );
+   ReactDOM.render(jsx, document.getElementById('root'));
+   ```
 
 In function components that need to access and/or modify this state:
 
 1. Import the `useContext` hook and `EasyContext`.
 
-```js
-import React, {useContext} from 'react';
-import {EasyContext} from 'context-easy';
-```
+   ```js
+   import React, {useContext} from 'react';
+   import {EasyContext} from 'context-easy';
+   ```
 
 2. Get the context object inside the function component.
 
-```js
-const context = useContext(EasyContext);
-```
+   ```js
+   const context = useContext(EasyContext);
+   ```
 
 3. Access state from the `context` object. For example:
 
-```js
-context.person.name;
-```
+   ```js
+   context.person.name;
+   ```
 
 4. Update state properties at specific paths
    by calling methods on the `context` object.\
