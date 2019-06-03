@@ -1,7 +1,10 @@
 {
-  "plugins": ["@babel/plugin-proposal-class-properties"],
   "presets": [
-    ["@babel/preset-env", {"useBuiltIns": "usage"}],
+    ["@babel/preset-env", {"useBuiltIns": false}],
     "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-runtime"
   ]
 }

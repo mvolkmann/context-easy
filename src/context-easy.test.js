@@ -1,6 +1,6 @@
 import {get} from 'lodash/fp';
 import React, {useContext} from 'react';
-import {render, cleanup, fireEvent} from 'react-testing-library';
+import {render, cleanup, fireEvent} from '@testing-library/react';
 import {EasyContext, EasyProvider} from './context-easy';
 
 describe('context-easy', () => {
@@ -77,8 +77,11 @@ describe('context-easy', () => {
     tester('set', ['foo.bar', 19], 19);
   });
 
-  test('toggle', () => {
+  test('toggle found', () => {
     tester('toggle', ['foo.qux'], true);
+  });
+
+  test('toggle not found', () => {
     tester('toggle', ['not.found'], true);
   });
 
