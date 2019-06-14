@@ -231,6 +231,19 @@ export class EasyProvider extends Component {
       );
     },
 
+    pop: path => {
+      if (this.shouldValidate) {
+        validatePath('pop', path);
+        validateArray('pop', path, get(path, this.state));
+      }
+      return this.performOperation(
+        'pop',
+        path,
+        null,
+        () => log && log('pop', this.state, path)
+      );
+    },
+
     push: (path, ...newValues) => {
       if (this.shouldValidate) {
         validatePath('push', path);
@@ -313,6 +326,15 @@ export class EasyProvider extends Component {
         case 'omit':
           newState = omit(path, this.state);
           break;
+        case 'pop': {
+          const currentValue = get(path, this.state);
+          newState = set(
+            path,
+            currentValue.slice(0, currentValue.length - 1),
+            this.state
+          );
+          break;
+        }
         case 'push': {
           const currentValue = get(path, this.state);
           newState = set(path, [...currentValue, ...value], this.state);

@@ -69,6 +69,10 @@ describe('context-easy', () => {
     tester('map', ['foo.baz', n => n * 2], [2, 4, 6, 8]);
   });
 
+  test('pop', () => {
+    tester('pop', ['foo.baz'], [1, 2, 3, 4]);
+  });
+
   test('push', () => {
     tester('push', ['foo.baz', 5, 6], [1, 2, 3, 4, 5, 6]);
   });

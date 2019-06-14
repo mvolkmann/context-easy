@@ -128,6 +128,10 @@ The context object currently implements ten methods.
   is passed each array element one at a time.
   The new array will contain the return values of each of these calls.
 
+- `context.pop(path)`\
+  This replaces the array at the given path with a new array.
+  The new array is the old array with the last element removed.
+
 - `context.push(path, newValue1, newValue2, ...)`\
   This replaces the array at the given path with a new array.
   The new array starts with all the existing elements
