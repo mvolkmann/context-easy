@@ -160,7 +160,7 @@ export class EasyProvider extends Component {
       return this.performOperation(
         'update',
         path,
-        n => n - delta,
+        n => (n || 0) - delta,
         () => log && log('decrement', this.state, path, 'by', delta)
       );
     },
@@ -201,7 +201,7 @@ export class EasyProvider extends Component {
       return this.performOperation(
         'update',
         path,
-        n => n + delta,
+        n => (n || 0) + delta,
         () => log && log('increment', this.state, path, 'by', delta)
       );
     },
