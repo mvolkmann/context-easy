@@ -189,7 +189,10 @@ export class EasyProvider extends Component {
       );
     },
 
-    get: path => get(path, this.state),
+    get: (path, defaultValue) => {
+      const value = get(path, this.state);
+      return value === undefined ? defaultValue : value;
+    },
 
     increment: (path, delta = 1) => {
       if (this.shouldValidate) {
@@ -328,11 +331,14 @@ export class EasyProvider extends Component {
           break;
         case 'pop': {
           const currentValue = get(path, this.state);
+          const {length} = currentValue;
+          const lastElement = length ? currentValue[length - 1] : null;
           newState = set(
             path,
             currentValue.slice(0, currentValue.length - 1),
             this.state
           );
+          resolve(lastElement);
           break;
         }
         case 'push': {

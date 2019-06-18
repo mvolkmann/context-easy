@@ -111,6 +111,11 @@ The context object currently implements ten methods.
   It should return true for elements to be retained
   and false for elements to be filtered out.
 
+- `context.get(path, defaultValue)`\
+  This returns the value at a given path.
+  The optional default value is returned if
+  there is nothing at the path or the value is undefined.
+
 - `context.increment(path)`\
   This increments the number at the given path.
   An optional second argument specifies the amount
@@ -131,6 +136,7 @@ The context object currently implements ten methods.
 - `context.pop(path)`\
   This replaces the array at the given path with a new array.
   The new array is the old array with the last element removed.
+  The returned promise resolves to the previous last element.
 
 - `context.push(path, newValue1, newValue2, ...)`\
   This replaces the array at the given path with a new array.
