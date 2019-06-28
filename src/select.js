@@ -1,4 +1,4 @@
-import {func, node, string} from 'prop-types';
+import {bool, func, node, string} from 'prop-types';
 import React, {useContext} from 'react';
 
 import {EasyContext} from './context-easy';
@@ -31,6 +31,7 @@ export default function Select(props) {
 Select.propTypes = {
   children: node,
   className: string,
+  multiple: bool,
   onChange: func,
   path: string
 };
