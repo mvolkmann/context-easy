@@ -1,6 +1,6 @@
 {
   "name": "context-easy",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "The easiest way to manage state in a React application!",
   "keywords": [
     "React",
@@ -16,9 +16,9 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d lib",
-    "format": "prettier --write 'src/**/*.{js,scss}'",
+    "format": "prettier --write 'src/**/*.{js,css}'",
     "lint": "eslint --quiet src --ext .js",
-    "prepublish": "babel src -d lib",
+    "prepublish": "babel src -d lib && cp src/*.css lib",
     "prepush": "npm run verify",
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "test": "npm run build && jest",
