@@ -3,6 +3,8 @@ import {bool, func, node, object, shape, string} from 'prop-types';
 import {get, omit, set, update} from 'lodash/fp';
 import React, {Component} from 'react';
 
+import './context-easy.css';
+
 const MSG_PREFIX = 'easy-context method ';
 const STATE_KEY = 'context-easy-state';
 const VERSION_KEY = '@reduxEasyVersion';

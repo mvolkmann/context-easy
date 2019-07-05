@@ -1,0 +1,5 @@
+.context-easy-checkboxes,
+.context-easy-radio-buttons {
+  display: flex;
+  align-items: center;
+}

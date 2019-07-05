@@ -31,7 +31,7 @@ export default function RadioButtons(props) {
     if (!obj.value) obj.value = obj.text;
     if (testId) extraProps['data-testid'] = testId + '-' + obj.value;
     return (
-      <div key={obj.value}>
+      <div className="context-easy-radio-buttons" key={obj.value}>
         <input
           checked={obj.value === value}
           className={obj.value}

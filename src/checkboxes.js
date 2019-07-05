@@ -32,7 +32,7 @@ export default function Checkboxes(props) {
     const name = getName(index);
     if (testId) extraProps['data-testid'] = testId + '-' + name;
     return (
-      <div key={name}>
+      <div className="context-easy-checkboxes" key={name}>
         <input
           className={name}
           checked={checked}
