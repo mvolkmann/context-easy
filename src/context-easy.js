@@ -7,7 +7,7 @@ import './context-easy.css';
 
 const MSG_PREFIX = 'easy-context method ';
 const STATE_KEY = 'context-easy-state';
-const VERSION_KEY = '@reduxEasyVersion';
+const VERSION_KEY = '@contextEasyVersion';
 
 export const EasyContext = React.createContext();
 
@@ -48,7 +48,7 @@ export function loadState() {
 
   const {sessionStorage} = window; // not available in tests
 
-  // If the version passed to reduxEasy does not match the version
+  // If the version passed to context-easy does not match the version
   // last saved in sessionStorage, assume that the shape of the state
   // may have changed and revert to initialState.
   const ssVersion = sessionStorage.getItem(VERSION_KEY);

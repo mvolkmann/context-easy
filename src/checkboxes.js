@@ -7,7 +7,7 @@ const getName = index => 'cb' + index;
 
 /**
  * This component renders a set of checkboxes.
- * The `list` prop specifies the text and Redux state path
+ * The `list` prop specifies the text and state path
  * for each checkbox.
  * Specify a `className` prop to enable styling the checkboxes.
  */

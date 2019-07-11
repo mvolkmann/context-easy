@@ -7,7 +7,7 @@ import {EasyContext} from './context-easy';
  * This component renders a set of radio buttons.
  * The `list` prop specifies the text and value
  * for each radio button.
- * The `path` prop specifies the Redux state path
+ * The `path` prop specifies the state path
  * where the value will be stored.
  * Specify a `className` prop to enable styling the radio-buttons.
  */
