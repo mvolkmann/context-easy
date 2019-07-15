@@ -1,5 +1,9 @@
-.context-easy-checkboxes,
+.context-easy-checkbox,
 .context-easy-radio-buttons {
   display: flex;
   align-items: center;
+}
+
+.context-easy-checkbox > input {
+  margin-right: 10px;
 }
