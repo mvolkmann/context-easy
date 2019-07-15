@@ -1,4 +1,4 @@
-import {arrayOf, shape, string} from 'prop-types';
+import {arrayOf, bool, shape, string} from 'prop-types';
 import React, {useContext} from 'react';
 
 import {EasyContext} from './context-easy';
@@ -20,7 +20,7 @@ export default function RadioButtons(props) {
     if (path) context.set(path, value);
   };
 
-  const {className, list, path} = props;
+  const {className, disabled, list, path} = props;
 
   const extraProps = {};
   const testId = props['data-testid'];
@@ -35,6 +35,7 @@ export default function RadioButtons(props) {
         <input
           checked={obj.value === value}
           className={obj.value}
+          disabled={disabled}
           name={path}
           onChange={handleChange}
           type="radio"
@@ -52,6 +53,7 @@ export default function RadioButtons(props) {
 RadioButtons.propTypes = {
   className: string,
   'data-testid': string,
+  disabled: bool,
   list: arrayOf(
     shape({
       text: string.isRequired,

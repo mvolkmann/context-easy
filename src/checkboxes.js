@@ -1,4 +1,4 @@
-import {arrayOf, shape, string} from 'prop-types';
+import {arrayOf, bool, shape, string} from 'prop-types';
 import React, {useCallback, useContext} from 'react';
 
 import {EasyContext} from './context-easy';
@@ -21,7 +21,7 @@ export default function Checkboxes(props) {
     if (path) context.set(path, value);
   });
 
-  const {className, list} = props;
+  const {className, disabled, list} = props;
 
   const extraProps = {};
   const testId = props['data-testid'];
@@ -36,6 +36,7 @@ export default function Checkboxes(props) {
         <input
           className={name}
           checked={checked}
+          disabled={disabled}
           id={name}
           onChange={e => handleChange(text, e)}
           type="checkbox"
@@ -52,6 +53,7 @@ export default function Checkboxes(props) {
 Checkboxes.propTypes = {
   className: string,
   'data-testid': string,
+  disabled: bool,
   list: arrayOf(
     shape({
       text: string.isRequired,
