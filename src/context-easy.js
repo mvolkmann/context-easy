@@ -323,6 +323,7 @@ export class EasyProvider extends Component {
   performOperation(operation, path, value, callback) {
     const waitFor = this.previousPromise;
 
+    // eslint-disable-next-line no-async-promise-executor
     this.previousPromise = new Promise(async resolve => {
       await waitFor; // pending operation to complete
 
