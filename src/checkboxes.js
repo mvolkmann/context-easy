@@ -42,7 +42,7 @@ export default function Checkboxes(props) {
           type="checkbox"
           {...extraProps}
         />
-        {text}
+        <div>{text}</div>
       </label>
     );
   });
