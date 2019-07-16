@@ -4,6 +4,6 @@
   align-items: center;
 }
 
-.context-easy-checkbox > input {
-  margin-right: 10px;
+.context-easy-checkbox > div {
+  margin-left: 10px;
 }
