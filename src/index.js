@@ -1,3 +1,4 @@
+export {default as Checkbox} from './checkbox';
 export {default as Checkboxes} from './checkboxes';
 export {default as Input} from './input';
 export {default as RadioButtons} from './radio-buttons';
