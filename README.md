@@ -247,8 +247,10 @@ It is common to have `input`, `select`, and `textarea` elements
 with `onChange` handlers that get their value from `event.target.value`
 and update a specific state path.
 An alternative is to use the provided
-`Input`, `Select`, and `TextArea`, `RadioButtons`, and `Checkboxes`
-components as follows:
+`Input`, `Select`, and `TextArea`, `Checkbox`, `Checkboxes`,
+and `RadioButtons` components as follows:
+
+### Input
 
 HTML `input` elements can be replaced by the `Input` component.
 For example:
@@ -267,12 +269,16 @@ updates the value at that path in the state.
 To perform additional processing of changes such as validation,
 supply an `onChange` prop whose value is a function.
 
+### TextArea
+
 HTML `textarea` elements can be replaced by the `TextArea` component.
 For example:
 
 ```js
 <TextArea path="feedback.comment" />
 ```
+
+### Select
 
 HTML `select` elements can be replaced by the `Select` component.
 For example:
@@ -287,6 +293,42 @@ For example:
 
 If the `option` elements have a `value` attribute, that value
 will be used instead of the text inside the `option`.
+
+### Checkbox
+
+For a single checkbox, use the `Checkbox` component.
+For example:
+
+```js
+<Checkbox className="subscribe-cb" text="Subscribe" path="user.subscribe" />
+```
+
+When the checkbox is clicked, the boolean value at the corresponding path
+will be toggled between false and true.
+
+### Checkboxes
+
+For a set of checkboxes, use the `Checkboxes` component.
+For example:
+
+```js
+<Checkboxes className="colors" list={checkboxList} />
+```
+
+where checkboxList is set as follows:
+
+```js
+const checkboxList = [
+  {text: 'Red', path: 'color.red'},
+  {text: 'Green', path: 'color.green'},
+  {text: 'Blue', path: 'color.blue'}
+];
+```
+
+When a checkbox is clicked, the boolean value at the corresponding path
+will be toggled between false and true.
+
+### RadioButtons
 
 For a set of radio buttons, use the `RadioButtons` component.
 For example:
@@ -311,26 +353,6 @@ const radioButtonList = [
 
 When a radio button is clicked, the state property `favorite.flavor`
 will be set to the value of that radio button.
-
-For a set of checkboxes, use the `Checkboxes` component.
-For example:
-
-```js
-<Checkboxes className="colors" list={checkboxList} />
-```
-
-where checkboxList is set as follows:
-
-```js
-const checkboxList = [
-  {text: 'Red', path: 'color.red'},
-  {text: 'Green', path: 'color.green'},
-  {text: 'Blue', path: 'color.blue'}
-];
-```
-
-When a checkbox is clicked, the boolean value at the corresponding path
-will be toggled between false and true.
 
 All of these components take a `path` prop
 which is used to get the current value of the component
