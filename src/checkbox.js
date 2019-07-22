@@ -27,19 +27,20 @@ export default function Checkbox(props) {
   });
 
   return (
-    <div className={'checkboxes ' + className}>
-      <label className="context-easy-checkbox" key={name}>
-        <input
-          className={name}
-          checked={checked}
-          disabled={disabled}
-          onChange={e => handleChange(text, e)}
-          type="checkbox"
-          {...extraProps}
-        />
-        <div>{text}</div>
-      </label>
-    </div>
+    <label
+      className={'context-easy-checkbox' + (className ? ' ' + className : '')}
+      key={name}
+    >
+      <input
+        className={name}
+        checked={checked}
+        disabled={disabled}
+        onChange={e => handleChange(text, e)}
+        type="checkbox"
+        {...extraProps}
+      />
+      <div>{text}</div>
+    </label>
   );
 }
 
