@@ -5,5 +5,9 @@
 }
 
 .context-easy-checkbox > div {
-  margin-left: 10px;
+  margin-left: 5px;
+}
+
+.context-easy-checkbox > input[type=checkbox] {
+  margin-left: 0;
 }
