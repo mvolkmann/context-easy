@@ -1,5 +1,5 @@
 import {arrayOf, bool, shape, string} from 'prop-types';
-import React, {useCallback, useContext} from 'react';
+import React, {useContext} from 'react';
 
 import {EasyContext} from './context-easy';
 
@@ -14,12 +14,12 @@ const getName = index => 'cb' + index;
 export default function Checkboxes(props) {
   const context = useContext(EasyContext);
 
-  const handleChange = useCallback((text, event) => {
+  function handleChange(text, event) {
     const {list} = props;
     const {path} = list.find(obj => obj.text === text);
     const value = event.target.checked;
     if (path) context.set(path, value);
-  });
+  }
 
   const {className, disabled, list} = props;
 

@@ -1,5 +1,5 @@
 import {bool, func, number, string} from 'prop-types';
-import React, {useCallback, useContext} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 
 import {EasyContext} from './context-easy';
 
@@ -7,8 +7,20 @@ export default function Input(props) {
   const {autoFocus, onChange, onEnter, onInput, path, type} = props;
   const context = useContext(EasyContext);
 
-  const handleChange = useCallback(event => {
+  const cursorRef = useRef();
+  const inputRef = useRef();
+
+  useEffect(() => {
+    const {current} = cursorRef;
+    if (current) {
+      inputRef.current.setSelectionRange(current, current);
+    }
+  });
+
+  function handleChange(event) {
     const {checked, value} = event.target;
+
+    cursorRef.current = inputRef.current.selectionStart;
 
     let v = value;
     if (type === 'checkbox') {
@@ -19,7 +31,7 @@ export default function Input(props) {
 
     if (path) context.set(path, v);
     if (onChange) onChange(event);
-  });
+  }
 
   let value = context.get(path);
 
@@ -49,7 +61,7 @@ export default function Input(props) {
     };
   }
 
-  return <input {...inputProps} onChange={handleChange} />;
+  return <input {...inputProps} onChange={handleChange} ref={inputRef} />;
 }
 
 Input.propTypes = {

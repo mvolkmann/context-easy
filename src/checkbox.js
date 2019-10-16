@@ -1,5 +1,5 @@
 import {bool, string} from 'prop-types';
-import React, {useCallback, useContext} from 'react';
+import React, {useContext} from 'react';
 
 import {EasyContext} from './context-easy';
 
@@ -22,20 +22,20 @@ export default function Checkbox(props) {
   const testId = props['data-testid'];
   if (testId) extraProps['data-testid'] = testId;
 
-  const handleChange = useCallback((text, event) => {
+  function handleChange(event) {
     if (path) context.set(path, event.target.checked);
-  });
+  }
 
   return (
     <label
       className={'context-easy-checkbox' + (className ? ' ' + className : '')}
-      key={name}
+      key={className}
     >
       <input
-        className={name}
+        className={className}
         checked={checked}
         disabled={disabled}
-        onChange={e => handleChange(text, e)}
+        onChange={handleChange}
         type="checkbox"
         {...extraProps}
       />
